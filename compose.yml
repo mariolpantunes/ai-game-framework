@@ -1,0 +1,13 @@
+services:
+  backend:
+    build:
+      context: .
+    image: ai-game-framework:latest
+    user: "${UID:-1000}:${GROUPS:-1000}"
+    ports:
+      - "8765:8765"
+
+  frontend:
+    image: nginx:alpine
+    ports:
+      - "8080:80"
