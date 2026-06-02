@@ -1,7 +1,7 @@
 import asyncio
-import sys
-import os
 import json
+import os
+import sys
 
 try:
     import websockets
@@ -98,18 +98,18 @@ async def receive_loop(websocket):
                 guessed = data.get("guessed_letters", [])
                 lives = data.get("remaining_lives", 6)
                 secret = data.get("secret_word", "")
-                
+
                 # Render CLI HUD
                 os.system("clear" if os.name == "posix" else "cls")
                 print("="*16 + " HANGMAN TERMINAL GAME " + "="*16)
                 print(GALLOWS_ART[max(0, min(6, lives))])
-                
+
                 spaced_masked = " ".join(list(masked)).upper()
                 print(f"WORD:  {spaced_masked}")
                 print(f"GUESSED LETTERS: {', '.join(guessed).upper()}")
                 print(f"LIVES REMAINING: {lives}")
                 print("-" * 55)
-                
+
                 if status == "WON":
                     print("\n🏆 VICTORY! You guessed the word successfully!")
                     print("Press ENTER to play again or type 'q' to quit.")
@@ -126,18 +126,18 @@ async def receive_loop(websocket):
 async def send_loop(websocket):
     # Set stdin to non-blocking or just standard async reading
     loop = asyncio.get_event_loop()
-    
+
     # Read guesses asynchronously from stdin
     def read_stdin():
         return sys.stdin.readline().strip().lower()
-        
+
     while True:
         guess = await loop.run_in_executor(None, read_stdin)
         if guess:
             if guess == "q" or guess == "quit":
                 print("Exiting Manual Agent...")
                 break
-            
+
             # Send single character guess
             if len(guess) == 1 and guess.isalpha():
                 await websocket.send(json.dumps({"action": guess}))

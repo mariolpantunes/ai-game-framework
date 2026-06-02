@@ -200,9 +200,9 @@
 
       <canvas id="hangmanCanvas" width="300" height="280"></canvas>
 
-      <!-- On screen clickable keyboard -->
-      <div class="keyboard-grid" id="keyboard">
-        <!-- Generated Dynamically -->
+      <!-- Viewer Mode Guide -->
+      <div style="background: rgba(46, 52, 64, 0.85); border-top: 1px solid var(--nord3); padding: 15px; width: 100%; border-radius: 8px; text-align: center;">
+        <strong style="color: var(--nord8);">Viewer Mode:</strong> Connect external agents (like <code class="key-badge">manual_agent.py</code>) to submit letter guesses.
       </div>
     </div>
 
@@ -222,9 +222,13 @@
       <!-- Lives count -->
       <div class="glass-card">
         <h3 class="card-title">GUESS ATTEMPTS</h3>
-        <div style="display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom: 12px;">
           <div style="font-size:0.9rem; color:var(--text-secondary);">REMAINING LIVES</div>
           <div style="font-family:'JetBrains Mono'; font-size:2rem; font-weight:800; color:var(--nord11);" id="livesText">6</div>
+        </div>
+        <div style="border-top: 1px solid var(--nord3); padding-top: 10px;">
+          <div style="font-size:0.8rem; color:var(--text-secondary); margin-bottom: 5px; text-transform: uppercase;">Guessed Letters</div>
+          <div style="font-family:'JetBrains Mono'; font-size:1.1rem; font-weight:700; color:var(--nord8);" id="guessedLettersText">NONE</div>
         </div>
       </div>
 
@@ -248,7 +252,6 @@
     const canvas = document.getElementById("hangmanCanvas");
     const ctx = canvas.getContext("2d");
     const wordDisplayEl = document.getElementById("wordDisplay");
-    const keyboardEl = document.getElementById("keyboard");
     const statusCard = document.getElementById("statusCard");
     const statusBadge = document.getElementById("statusBadge");
     const answerReveal = document.getElementById("answerReveal");
@@ -258,17 +261,6 @@
 
     // Connect WebSocket
     const client = new GameClient(8765);
-
-    // Initial keyboard builder
-    buildKeyboard();
-
-    // Physical key listener
-    window.addEventListener("keydown", (e) => {
-      const letter = e.key.toLowerCase();
-      if (letter.length === 1 && letter >= 'a' && letter <= 'z') {
-        client.sendAction({ action: letter });
-      }
-    });
 
     restartBtn.addEventListener("click", () => {
       client.sendAction({ action: "reset" });
@@ -309,55 +301,17 @@
         headerState.className = "badge badge-running";
       }
 
-      // 4. Keyboard highlight update
-      updateKeyboardKeys(state.guessed_letters, state.secret_word || "");
+      // 4. Guessed letters text update
+      const guessed = state.guessed_letters && state.guessed_letters.length > 0
+        ? state.guessed_letters.join(", ").toUpperCase()
+        : "NONE";
+      document.getElementById("guessedLettersText").textContent = guessed;
 
       // 5. Gallows vector canvas rendering
       drawGallows(state.remaining_lives);
     };
 
-    function buildKeyboard() {
-      keyboardEl.innerHTML = "";
-      const alphabet = "abcdefghijklmnopqrstuvwxyz";
-      for (let char of alphabet) {
-        const btn = document.createElement("button");
-        btn.textContent = char;
-        btn.className = "key-btn";
-        btn.id = `key-${char}`;
-        btn.addEventListener("click", () => {
-          client.sendAction({ action: char });
-        });
-        keyboardEl.appendChild(btn);
-      }
-    }
 
-    function updateKeyboardKeys(guessedList, secretWord) {
-      if (!guessedList) return;
-      const alphabet = "abcdefghijklmnopqrstuvwxyz";
-      for (let char of alphabet) {
-        const btn = document.getElementById(`key-${char}`);
-        if (!btn) continue;
-
-        if (guessedList.includes(char)) {
-          // If letter was correct, green, else red
-          // We can check if secretWord contains it, or if game is running we check local guess outcome
-          // If secretWord is revealed we know, otherwise if we got a life decrease it was wrong
-          // Server state might not tell us directly but if guess in secretWord or (if secretWord is empty we check if letter was in word)
-          // We will check if it was guessed
-          btn.disabled = true;
-          // Simple client check (approximate green/red)
-          const wordElText = wordDisplayEl.textContent.replace(/\s/g, "").toLowerCase();
-          if (wordElText.includes(char) || (secretWord && secretWord.includes(char))) {
-            btn.className = "key-btn correct";
-          } else {
-            btn.className = "key-btn incorrect";
-          }
-        } else {
-          btn.disabled = false;
-          btn.className = "key-btn";
-        }
-      }
-    }
 
     function drawGallows(lives) {
       // Clear

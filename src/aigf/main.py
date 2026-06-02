@@ -81,6 +81,8 @@ def find_static_file(path: str) -> str | None:
 
     cwd = os.getcwd()
 
+    import sys
+
     # We search in these directories in order:
     search_dirs = [
         os.path.join(cwd, "frontend"),
@@ -88,9 +90,20 @@ def find_static_file(path: str) -> str | None:
         os.path.join(cwd, "game", "frontend"),
         os.path.join(cwd, "game", "viewer"),
         cwd,
-        # Check submodule's own frontend assets
-        os.path.abspath(os.path.join(os.path.dirname(__file__), "frontend")),
     ]
+
+    # Dynamically resolve relative to the main executing script folder (e.g. dino_jump/)
+    main_module = sys.modules.get("__main__")
+    if main_module and hasattr(main_module, "__file__") and main_module.__file__:
+        main_dir = os.path.dirname(os.path.abspath(main_module.__file__))
+        search_dirs.extend([
+            os.path.join(main_dir, "frontend"),
+            os.path.join(main_dir, "viewer"),
+            main_dir
+        ])
+
+    # Check package's own frontend assets
+    search_dirs.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "frontend")))
 
     paths_to_try = [clean_path]
     if clean_path.startswith("framework/"):

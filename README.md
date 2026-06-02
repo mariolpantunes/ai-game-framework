@@ -23,7 +23,7 @@ Inspired by modern web micro-frameworks like **FastAPI** and **Flask**, `aigf` a
 
 ---
 
-## 📦 Installation
+## Installation
 
 Add it directly to your game project's `requirements.txt`:
 
@@ -39,7 +39,7 @@ pip install .
 
 ---
 
-## 🛠️ How it Works: Racetrack Webpage Integration
+## How it Works: Webpage Integration
 
 The framework handles HTTP requests through a specialized static file server routing mechanism. 
 When a web browser connects to the server (e.g. `http://localhost:8765/`):
@@ -62,7 +62,7 @@ client.onUpdate((state) => {
 
 ---
 
-## 💡 Quick Start: Fast API Decorated Server
+## Quick Start: Decorated Game Server
 
 Creating a game server is exceptionally quick. Register game loops and player interactions with function annotations:
 
@@ -104,9 +104,9 @@ if __name__ == "__main__":
 
 ---
 
-## 🎮 Interactive Examples
+## Interactive Examples
 
-The package includes three fully functioning, high-quality sample games demonstrating the API:
+The package includes two fully functioning, high-quality sample games demonstrating the API:
 
 ### 1. Dino Jump (Real-Time Game)
 Located in `examples/dino_jump/`. Mimics Chrome's offline dinosaur game.
@@ -120,15 +120,9 @@ Located in `examples/hangman/`. A turn-based word-discovery game with zero ticks
 * **Play in Browser**: Open `http://localhost:8765/` (click or type letters).
 * **Play in Terminal**: Run `python3 examples/hangman/manual_agent.py`.
 
-### 3. Neon GP (Race Game)
-Located in `examples/race_game/`. A real-time oval track racing simulation with off-road drag physics.
-* **Start Server**: `python3 examples/race_game/main.py`
-* **Play in Browser**: Open `http://localhost:8765/`.
-* **Play in Terminal**: Run `python3 examples/race_game/manual_agent.py` (steer with arrows/WASD).
-
 ---
 
-## 🧪 Running Unit Tests
+## Running Unit Tests
 Validate code changes using pytest:
 ```bash
 PYTHONPATH=src:. pytest
@@ -136,7 +130,7 @@ PYTHONPATH=src:. pytest
 
 ---
 
-## 📚 Generating Documentation
+## Generating Documentation
 The codebase utilizes Google-style docstrings. Build documentation into standard HTML using `pdoc`:
 ```bash
 pip install pdoc

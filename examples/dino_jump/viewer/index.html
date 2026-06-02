@@ -140,7 +140,7 @@
       
       <div style="background: rgba(46, 52, 64, 0.85); border-top:1px solid var(--nord3); padding:15px; display:flex; justify-content:space-between; align-items:center;">
         <div>
-          <strong style="color: var(--nord8);">Keyboard Override:</strong> Focus the game screen and press <span class="key-badge">SPACEBAR</span> or <span class="key-badge">▲ ARROW</span> to jump!
+          <strong style="color: var(--nord8);">Viewer Mode:</strong> Connect external agents (like <code class="key-badge">manual_agent.py</code>) to run and steer the simulation.
         </div>
       </div>
     </div>
@@ -195,13 +195,7 @@
       { x: 750, y: 60, size: 30, speed: 0.25 },
     ];
 
-    // Local key listeners to send action to server
-    window.addEventListener("keydown", (e) => {
-      if (e.key === " " || e.key === "ArrowUp") {
-        e.preventDefault();
-        client.sendAction({ action: "jump" });
-      }
-    });
+
 
     client.onUpdate = (data) => {
       // Clear screen

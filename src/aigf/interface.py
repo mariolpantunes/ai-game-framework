@@ -216,6 +216,9 @@ class AIGameServer(GameInterface):
         self._disconnect_cb = func
         return func
 
+    def on_player_handshake(self, func):
+        self._handshake_cb = func
+        return func
 
     def on_action(self, func):
         self._action_cb = func
@@ -315,12 +318,3 @@ class AIGameServer(GameInterface):
         """
         from .main import run_app
         run_app(self, host, port)
-
-
-# Avoid namespace collision with callback on_handshake method by binding the decorator dynamically
-def _on_handshake(self, func):
-    self._handshake_cb = func
-    return func
-
-
-AIGameServer.on_handshake = _on_handshake  # type: ignore
