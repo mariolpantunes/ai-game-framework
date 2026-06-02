@@ -1,0 +1,52 @@
+<svg width="800" height="200" viewBox="0 0 800 200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Nord Palette -->
+  <rect width="800" height="200" rx="10" fill="#ECEFF4"/>
+  
+  <!-- Background patterns (Rich version) -->
+  <g opacity="0.1">
+    <circle cx="700" cy="50" r="80" fill="#81A1C1" />
+    <path d="M0 150 Q200 100 400 150 T800 150" stroke="#5E81AC" stroke-width="2" fill="none" />
+    <path d="M0 170 Q200 120 400 170 T800 170" stroke="#88C0D0" stroke-width="2" fill="none" />
+  </g>
+
+  <!-- Expanded Logo Group (Rich scaling) -->
+  <g transform="translate(30, 25) scale(1.5)">
+    <!-- Cogwheel -->
+    <g transform="translate(50, 50)" fill="#81A1C1">
+      <path d="M-30,-8 L-40,-8 L-40,8 L-30,8 A30,30 0 0,0 -21.2,21.2 L-26.8,26.8 L-15.5,38.2 L-10,32.5 A30,30 0 0,0 10,32.5 L15.5,38.2 L26.8,26.8 L21.2,21.2 A30,30 0 0,0 30,8 L40,8 L40,-8 L30,-8 A30,30 0 0,0 21.2,-21.2 L26.8,-26.8 L15.5,-38.2 L10,-32.5 A30,30 0 0,0 -10,-32.5 L-15.5,-38.2 L-26.8,-26.8 L-21.2,-21.2 A30,30 0 0,0 -30,-8 Z" />
+      <circle r="22" fill="#ECEFF4"/>
+    </g>
+    <!-- Tiny Robot -->
+    <g transform="translate(50, 52)">
+      <rect x="-12" y="-10" width="24" height="18" rx="4" fill="#88C0D0"/>
+      <line x1="0" y1="-10" x2="0" y2="-16" stroke="#4C566A" stroke-width="2"/>
+      <circle cx="0" cy="-17" r="2" fill="#BF616A"/>
+      <circle cx="-5" cy="-4" r="2" fill="#ECEFF4"/>
+      <circle cx="5" cy="-4" r="2" fill="#ECEFF4"/>
+      <rect x="-4" y="2" width="8" height="1.5" rx="1" fill="#4C566A"/>
+    </g>
+  </g>
+
+  <!-- Text and Slogan (Rich typography) -->
+  <text x="210" y="100" font-family="sans-serif" font-size="54" font-weight="bold" fill="#2E3440">AI Game Framework</text>
+  <text x="215" y="145" font-family="sans-serif" font-size="22" fill="#4C566A">Unified Infrastructure for Agents &amp; Neuroevolution</text>
+
+  <!-- Game elements decorations (Shifted further right to avoid overlap) -->
+  <g transform="translate(710, 110)">
+    <!-- Joystick -->
+    <rect x="0" y="0" width="60" height="40" rx="8" fill="#D8DEE9" />
+    <circle cx="15" cy="15" r="4" fill="#BF616A" />
+    <circle cx="30" cy="15" r="4" fill="#A3BE8C" />
+    <circle cx="45" cy="15" r="4" fill="#EBCB8B" />
+    <rect x="25" y="25" width="10" height="10" rx="2" fill="#5E81AC" />
+  </g>
+  
+  <!-- Connection Nodes (Adjusted to right edge) -->
+  <g fill="#88C0D0">
+    <circle cx="750" cy="40" r="5" />
+    <circle cx="780" cy="15" r="5" />
+    <circle cx="780" cy="40" r="5" />
+    <line x1="750" y1="40" x2="780" y2="15" stroke="#88C0D0" stroke-width="2" />
+    <line x1="750" y1="40" x2="780" y2="40" stroke="#88C0D0" stroke-width="2" />
+  </g>
+</svg>
