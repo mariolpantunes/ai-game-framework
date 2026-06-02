@@ -154,6 +154,9 @@
                                 <a class="function" href="#AIGameServer.on_disconnect">on_disconnect</a>
                         </li>
                         <li>
+                                <a class="function" href="#AIGameServer.on_player_handshake">on_player_handshake</a>
+                        </li>
+                        <li>
                                 <a class="function" href="#AIGameServer.on_action">on_action</a>
                         </li>
                         <li>
@@ -455,114 +458,108 @@
 </span><span id="L-216"><a href="#L-216"><span class="linenos">216</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span> <span class="o">=</span> <span class="n">func</span>
 </span><span id="L-217"><a href="#L-217"><span class="linenos">217</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span><span id="L-218"><a href="#L-218"><span class="linenos">218</span></a>
-</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>
-</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>
-</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>
-</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>
-</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>
-</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>
-</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>
-</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>
-</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>
-</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>    <span class="c1"># --- Callback Delegations (matching GameInterface) ---</span>
-</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>
-</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">:</span>
-</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
-</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>
-</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">:</span>
-</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
-</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a>
-</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">:</span>
-</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_handshake</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>
-</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">:</span>
-</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
-</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a>
-</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">:</span>
-</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-</span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a>
-</span><span id="L-276"><a href="#L-276"><span class="linenos">276</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-277"><a href="#L-277"><span class="linenos">277</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">:</span>
-</span><span id="L-278"><a href="#L-278"><span class="linenos">278</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">()</span>
-</span><span id="L-279"><a href="#L-279"><span class="linenos">279</span></a>        <span class="k">return</span> <span class="p">{}</span>
-</span><span id="L-280"><a href="#L-280"><span class="linenos">280</span></a>
-</span><span id="L-281"><a href="#L-281"><span class="linenos">281</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_setup_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="L-282"><a href="#L-282"><span class="linenos">282</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">:</span>
-</span><span id="L-283"><a href="#L-283"><span class="linenos">283</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">()</span>
-</span><span id="L-284"><a href="#L-284"><span class="linenos">284</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_setup_payload</span><span class="p">()</span>
-</span><span id="L-285"><a href="#L-285"><span class="linenos">285</span></a>
-</span><span id="L-286"><a href="#L-286"><span class="linenos">286</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-287"><a href="#L-287"><span class="linenos">287</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">:</span>
-</span><span id="L-288"><a href="#L-288"><span class="linenos">288</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">()</span>
-</span><span id="L-289"><a href="#L-289"><span class="linenos">289</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_start_sim</span><span class="p">()</span>
-</span><span id="L-291"><a href="#L-291"><span class="linenos">291</span></a>
-</span><span id="L-292"><a href="#L-292"><span class="linenos">292</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_stop_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-293"><a href="#L-293"><span class="linenos">293</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">:</span>
-</span><span id="L-294"><a href="#L-294"><span class="linenos">294</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">()</span>
-</span><span id="L-295"><a href="#L-295"><span class="linenos">295</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_stop_sim</span><span class="p">()</span>
-</span><span id="L-297"><a href="#L-297"><span class="linenos">297</span></a>
-</span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_reset_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">:</span>
-</span><span id="L-300"><a href="#L-300"><span class="linenos">300</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">()</span>
-</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-302"><a href="#L-302"><span class="linenos">302</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset_sim</span><span class="p">()</span>
-</span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a>
-</span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-305"><a href="#L-305"><span class="linenos">305</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">:</span>
-</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
-</span><span id="L-307"><a href="#L-307"><span class="linenos">307</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="L-308"><a href="#L-308"><span class="linenos">308</span></a>            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load_map_data</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
-</span><span id="L-309"><a href="#L-309"><span class="linenos">309</span></a>
-</span><span id="L-310"><a href="#L-310"><span class="linenos">310</span></a>    <span class="c1"># --- Run Launcher ---</span>
-</span><span id="L-311"><a href="#L-311"><span class="linenos">311</span></a>
-</span><span id="L-312"><a href="#L-312"><span class="linenos">312</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8765</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="L-313"><a href="#L-313"><span class="linenos">313</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="L-314"><a href="#L-314"><span class="linenos">314</span></a><span class="sd">        Directly starts the game server instance.</span>
-</span><span id="L-315"><a href="#L-315"><span class="linenos">315</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="L-316"><a href="#L-316"><span class="linenos">316</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_app</span>
-</span><span id="L-317"><a href="#L-317"><span class="linenos">317</span></a>        <span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
-</span><span id="L-318"><a href="#L-318"><span class="linenos">318</span></a>
-</span><span id="L-319"><a href="#L-319"><span class="linenos">319</span></a>
-</span><span id="L-320"><a href="#L-320"><span class="linenos">320</span></a><span class="c1"># Avoid namespace collision with callback on_handshake method by binding the decorator dynamically</span>
-</span><span id="L-321"><a href="#L-321"><span class="linenos">321</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_on_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="L-322"><a href="#L-322"><span class="linenos">322</span></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="L-323"><a href="#L-323"><span class="linenos">323</span></a>    <span class="k">return</span> <span class="n">func</span>
-</span><span id="L-324"><a href="#L-324"><span class="linenos">324</span></a>
-</span><span id="L-325"><a href="#L-325"><span class="linenos">325</span></a>
-</span><span id="L-326"><a href="#L-326"><span class="linenos">326</span></a><span class="n">AIGameServer</span><span class="o">.</span><span class="n">on_handshake</span> <span class="o">=</span> <span class="n">_on_handshake</span>  <span class="c1"># type: ignore</span>
+</span><span id="L-219"><a href="#L-219"><span class="linenos">219</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_player_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-220"><a href="#L-220"><span class="linenos">220</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-221"><a href="#L-221"><span class="linenos">221</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-222"><a href="#L-222"><span class="linenos">222</span></a>
+</span><span id="L-223"><a href="#L-223"><span class="linenos">223</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-224"><a href="#L-224"><span class="linenos">224</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-225"><a href="#L-225"><span class="linenos">225</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-226"><a href="#L-226"><span class="linenos">226</span></a>
+</span><span id="L-227"><a href="#L-227"><span class="linenos">227</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-228"><a href="#L-228"><span class="linenos">228</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-229"><a href="#L-229"><span class="linenos">229</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-230"><a href="#L-230"><span class="linenos">230</span></a>
+</span><span id="L-231"><a href="#L-231"><span class="linenos">231</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-232"><a href="#L-232"><span class="linenos">232</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-233"><a href="#L-233"><span class="linenos">233</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-234"><a href="#L-234"><span class="linenos">234</span></a>
+</span><span id="L-235"><a href="#L-235"><span class="linenos">235</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-236"><a href="#L-236"><span class="linenos">236</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-237"><a href="#L-237"><span class="linenos">237</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-238"><a href="#L-238"><span class="linenos">238</span></a>
+</span><span id="L-239"><a href="#L-239"><span class="linenos">239</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-240"><a href="#L-240"><span class="linenos">240</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-241"><a href="#L-241"><span class="linenos">241</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-242"><a href="#L-242"><span class="linenos">242</span></a>
+</span><span id="L-243"><a href="#L-243"><span class="linenos">243</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-244"><a href="#L-244"><span class="linenos">244</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-245"><a href="#L-245"><span class="linenos">245</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-246"><a href="#L-246"><span class="linenos">246</span></a>
+</span><span id="L-247"><a href="#L-247"><span class="linenos">247</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-248"><a href="#L-248"><span class="linenos">248</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-249"><a href="#L-249"><span class="linenos">249</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-250"><a href="#L-250"><span class="linenos">250</span></a>
+</span><span id="L-251"><a href="#L-251"><span class="linenos">251</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="L-252"><a href="#L-252"><span class="linenos">252</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="L-253"><a href="#L-253"><span class="linenos">253</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="L-254"><a href="#L-254"><span class="linenos">254</span></a>
+</span><span id="L-255"><a href="#L-255"><span class="linenos">255</span></a>    <span class="c1"># --- Callback Delegations (matching GameInterface) ---</span>
+</span><span id="L-256"><a href="#L-256"><span class="linenos">256</span></a>
+</span><span id="L-257"><a href="#L-257"><span class="linenos">257</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-258"><a href="#L-258"><span class="linenos">258</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">:</span>
+</span><span id="L-259"><a href="#L-259"><span class="linenos">259</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
+</span><span id="L-260"><a href="#L-260"><span class="linenos">260</span></a>
+</span><span id="L-261"><a href="#L-261"><span class="linenos">261</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-262"><a href="#L-262"><span class="linenos">262</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">:</span>
+</span><span id="L-263"><a href="#L-263"><span class="linenos">263</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
+</span><span id="L-264"><a href="#L-264"><span class="linenos">264</span></a>
+</span><span id="L-265"><a href="#L-265"><span class="linenos">265</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-266"><a href="#L-266"><span class="linenos">266</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">:</span>
+</span><span id="L-267"><a href="#L-267"><span class="linenos">267</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span id="L-268"><a href="#L-268"><span class="linenos">268</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-269"><a href="#L-269"><span class="linenos">269</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_handshake</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span id="L-270"><a href="#L-270"><span class="linenos">270</span></a>
+</span><span id="L-271"><a href="#L-271"><span class="linenos">271</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-272"><a href="#L-272"><span class="linenos">272</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">:</span>
+</span><span id="L-273"><a href="#L-273"><span class="linenos">273</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+</span><span id="L-274"><a href="#L-274"><span class="linenos">274</span></a>
+</span><span id="L-275"><a href="#L-275"><span class="linenos">275</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-276"><a href="#L-276"><span class="linenos">276</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">:</span>
+</span><span id="L-277"><a href="#L-277"><span class="linenos">277</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+</span><span id="L-278"><a href="#L-278"><span class="linenos">278</span></a>
+</span><span id="L-279"><a href="#L-279"><span class="linenos">279</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-280"><a href="#L-280"><span class="linenos">280</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">:</span>
+</span><span id="L-281"><a href="#L-281"><span class="linenos">281</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">()</span>
+</span><span id="L-282"><a href="#L-282"><span class="linenos">282</span></a>        <span class="k">return</span> <span class="p">{}</span>
+</span><span id="L-283"><a href="#L-283"><span class="linenos">283</span></a>
+</span><span id="L-284"><a href="#L-284"><span class="linenos">284</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_setup_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="L-285"><a href="#L-285"><span class="linenos">285</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">:</span>
+</span><span id="L-286"><a href="#L-286"><span class="linenos">286</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">()</span>
+</span><span id="L-287"><a href="#L-287"><span class="linenos">287</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_setup_payload</span><span class="p">()</span>
+</span><span id="L-288"><a href="#L-288"><span class="linenos">288</span></a>
+</span><span id="L-289"><a href="#L-289"><span class="linenos">289</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-290"><a href="#L-290"><span class="linenos">290</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">:</span>
+</span><span id="L-291"><a href="#L-291"><span class="linenos">291</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">()</span>
+</span><span id="L-292"><a href="#L-292"><span class="linenos">292</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-293"><a href="#L-293"><span class="linenos">293</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_start_sim</span><span class="p">()</span>
+</span><span id="L-294"><a href="#L-294"><span class="linenos">294</span></a>
+</span><span id="L-295"><a href="#L-295"><span class="linenos">295</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_stop_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-296"><a href="#L-296"><span class="linenos">296</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">:</span>
+</span><span id="L-297"><a href="#L-297"><span class="linenos">297</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">()</span>
+</span><span id="L-298"><a href="#L-298"><span class="linenos">298</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-299"><a href="#L-299"><span class="linenos">299</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_stop_sim</span><span class="p">()</span>
+</span><span id="L-300"><a href="#L-300"><span class="linenos">300</span></a>
+</span><span id="L-301"><a href="#L-301"><span class="linenos">301</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_reset_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-302"><a href="#L-302"><span class="linenos">302</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">:</span>
+</span><span id="L-303"><a href="#L-303"><span class="linenos">303</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">()</span>
+</span><span id="L-304"><a href="#L-304"><span class="linenos">304</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-305"><a href="#L-305"><span class="linenos">305</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset_sim</span><span class="p">()</span>
+</span><span id="L-306"><a href="#L-306"><span class="linenos">306</span></a>
+</span><span id="L-307"><a href="#L-307"><span class="linenos">307</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-308"><a href="#L-308"><span class="linenos">308</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">:</span>
+</span><span id="L-309"><a href="#L-309"><span class="linenos">309</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
+</span><span id="L-310"><a href="#L-310"><span class="linenos">310</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="L-311"><a href="#L-311"><span class="linenos">311</span></a>            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load_map_data</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
+</span><span id="L-312"><a href="#L-312"><span class="linenos">312</span></a>
+</span><span id="L-313"><a href="#L-313"><span class="linenos">313</span></a>    <span class="c1"># --- Run Launcher ---</span>
+</span><span id="L-314"><a href="#L-314"><span class="linenos">314</span></a>
+</span><span id="L-315"><a href="#L-315"><span class="linenos">315</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8765</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="L-316"><a href="#L-316"><span class="linenos">316</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="L-317"><a href="#L-317"><span class="linenos">317</span></a><span class="sd">        Directly starts the game server instance.</span>
+</span><span id="L-318"><a href="#L-318"><span class="linenos">318</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="L-319"><a href="#L-319"><span class="linenos">319</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_app</span>
+</span><span id="L-320"><a href="#L-320"><span class="linenos">320</span></a>        <span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1376,105 +1373,108 @@ Handles physics and game logic updates.</p>
 </span><span id="AIGameServer-217"><a href="#AIGameServer-217"><span class="linenos">217</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span> <span class="o">=</span> <span class="n">func</span>
 </span><span id="AIGameServer-218"><a href="#AIGameServer-218"><span class="linenos">218</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span><span id="AIGameServer-219"><a href="#AIGameServer-219"><span class="linenos">219</span></a>
-</span><span id="AIGameServer-220"><a href="#AIGameServer-220"><span class="linenos">220</span></a>
-</span><span id="AIGameServer-221"><a href="#AIGameServer-221"><span class="linenos">221</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-222"><a href="#AIGameServer-222"><span class="linenos">222</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-223"><a href="#AIGameServer-223"><span class="linenos">223</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-224"><a href="#AIGameServer-224"><span class="linenos">224</span></a>
-</span><span id="AIGameServer-225"><a href="#AIGameServer-225"><span class="linenos">225</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-226"><a href="#AIGameServer-226"><span class="linenos">226</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-227"><a href="#AIGameServer-227"><span class="linenos">227</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-228"><a href="#AIGameServer-228"><span class="linenos">228</span></a>
-</span><span id="AIGameServer-229"><a href="#AIGameServer-229"><span class="linenos">229</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-230"><a href="#AIGameServer-230"><span class="linenos">230</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-231"><a href="#AIGameServer-231"><span class="linenos">231</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-232"><a href="#AIGameServer-232"><span class="linenos">232</span></a>
-</span><span id="AIGameServer-233"><a href="#AIGameServer-233"><span class="linenos">233</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-234"><a href="#AIGameServer-234"><span class="linenos">234</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-235"><a href="#AIGameServer-235"><span class="linenos">235</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-236"><a href="#AIGameServer-236"><span class="linenos">236</span></a>
-</span><span id="AIGameServer-237"><a href="#AIGameServer-237"><span class="linenos">237</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-238"><a href="#AIGameServer-238"><span class="linenos">238</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-239"><a href="#AIGameServer-239"><span class="linenos">239</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-240"><a href="#AIGameServer-240"><span class="linenos">240</span></a>
-</span><span id="AIGameServer-241"><a href="#AIGameServer-241"><span class="linenos">241</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-242"><a href="#AIGameServer-242"><span class="linenos">242</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-243"><a href="#AIGameServer-243"><span class="linenos">243</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-244"><a href="#AIGameServer-244"><span class="linenos">244</span></a>
-</span><span id="AIGameServer-245"><a href="#AIGameServer-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-246"><a href="#AIGameServer-246"><span class="linenos">246</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-247"><a href="#AIGameServer-247"><span class="linenos">247</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-248"><a href="#AIGameServer-248"><span class="linenos">248</span></a>
-</span><span id="AIGameServer-249"><a href="#AIGameServer-249"><span class="linenos">249</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer-250"><a href="#AIGameServer-250"><span class="linenos">250</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer-251"><a href="#AIGameServer-251"><span class="linenos">251</span></a>        <span class="k">return</span> <span class="n">func</span>
-</span><span id="AIGameServer-252"><a href="#AIGameServer-252"><span class="linenos">252</span></a>
-</span><span id="AIGameServer-253"><a href="#AIGameServer-253"><span class="linenos">253</span></a>    <span class="c1"># --- Callback Delegations (matching GameInterface) ---</span>
-</span><span id="AIGameServer-254"><a href="#AIGameServer-254"><span class="linenos">254</span></a>
-</span><span id="AIGameServer-255"><a href="#AIGameServer-255"><span class="linenos">255</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-256"><a href="#AIGameServer-256"><span class="linenos">256</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-257"><a href="#AIGameServer-257"><span class="linenos">257</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
-</span><span id="AIGameServer-258"><a href="#AIGameServer-258"><span class="linenos">258</span></a>
-</span><span id="AIGameServer-259"><a href="#AIGameServer-259"><span class="linenos">259</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-260"><a href="#AIGameServer-260"><span class="linenos">260</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-261"><a href="#AIGameServer-261"><span class="linenos">261</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
-</span><span id="AIGameServer-262"><a href="#AIGameServer-262"><span class="linenos">262</span></a>
-</span><span id="AIGameServer-263"><a href="#AIGameServer-263"><span class="linenos">263</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-264"><a href="#AIGameServer-264"><span class="linenos">264</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-265"><a href="#AIGameServer-265"><span class="linenos">265</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</span><span id="AIGameServer-266"><a href="#AIGameServer-266"><span class="linenos">266</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer-267"><a href="#AIGameServer-267"><span class="linenos">267</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_handshake</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
-</span><span id="AIGameServer-268"><a href="#AIGameServer-268"><span class="linenos">268</span></a>
-</span><span id="AIGameServer-269"><a href="#AIGameServer-269"><span class="linenos">269</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-270"><a href="#AIGameServer-270"><span class="linenos">270</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-271"><a href="#AIGameServer-271"><span class="linenos">271</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
-</span><span id="AIGameServer-272"><a href="#AIGameServer-272"><span class="linenos">272</span></a>
-</span><span id="AIGameServer-273"><a href="#AIGameServer-273"><span class="linenos">273</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-274"><a href="#AIGameServer-274"><span class="linenos">274</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-275"><a href="#AIGameServer-275"><span class="linenos">275</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
-</span><span id="AIGameServer-276"><a href="#AIGameServer-276"><span class="linenos">276</span></a>
-</span><span id="AIGameServer-277"><a href="#AIGameServer-277"><span class="linenos">277</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="AIGameServer-278"><a href="#AIGameServer-278"><span class="linenos">278</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-279"><a href="#AIGameServer-279"><span class="linenos">279</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">()</span>
-</span><span id="AIGameServer-280"><a href="#AIGameServer-280"><span class="linenos">280</span></a>        <span class="k">return</span> <span class="p">{}</span>
-</span><span id="AIGameServer-281"><a href="#AIGameServer-281"><span class="linenos">281</span></a>
-</span><span id="AIGameServer-282"><a href="#AIGameServer-282"><span class="linenos">282</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_setup_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="AIGameServer-283"><a href="#AIGameServer-283"><span class="linenos">283</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-284"><a href="#AIGameServer-284"><span class="linenos">284</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">()</span>
-</span><span id="AIGameServer-285"><a href="#AIGameServer-285"><span class="linenos">285</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_setup_payload</span><span class="p">()</span>
-</span><span id="AIGameServer-286"><a href="#AIGameServer-286"><span class="linenos">286</span></a>
-</span><span id="AIGameServer-287"><a href="#AIGameServer-287"><span class="linenos">287</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-288"><a href="#AIGameServer-288"><span class="linenos">288</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-289"><a href="#AIGameServer-289"><span class="linenos">289</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">()</span>
-</span><span id="AIGameServer-290"><a href="#AIGameServer-290"><span class="linenos">290</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer-291"><a href="#AIGameServer-291"><span class="linenos">291</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_start_sim</span><span class="p">()</span>
-</span><span id="AIGameServer-292"><a href="#AIGameServer-292"><span class="linenos">292</span></a>
-</span><span id="AIGameServer-293"><a href="#AIGameServer-293"><span class="linenos">293</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_stop_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-294"><a href="#AIGameServer-294"><span class="linenos">294</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-295"><a href="#AIGameServer-295"><span class="linenos">295</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">()</span>
-</span><span id="AIGameServer-296"><a href="#AIGameServer-296"><span class="linenos">296</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer-297"><a href="#AIGameServer-297"><span class="linenos">297</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_stop_sim</span><span class="p">()</span>
-</span><span id="AIGameServer-298"><a href="#AIGameServer-298"><span class="linenos">298</span></a>
-</span><span id="AIGameServer-299"><a href="#AIGameServer-299"><span class="linenos">299</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_reset_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-300"><a href="#AIGameServer-300"><span class="linenos">300</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-301"><a href="#AIGameServer-301"><span class="linenos">301</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">()</span>
-</span><span id="AIGameServer-302"><a href="#AIGameServer-302"><span class="linenos">302</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer-303"><a href="#AIGameServer-303"><span class="linenos">303</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset_sim</span><span class="p">()</span>
-</span><span id="AIGameServer-304"><a href="#AIGameServer-304"><span class="linenos">304</span></a>
-</span><span id="AIGameServer-305"><a href="#AIGameServer-305"><span class="linenos">305</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-306"><a href="#AIGameServer-306"><span class="linenos">306</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">:</span>
-</span><span id="AIGameServer-307"><a href="#AIGameServer-307"><span class="linenos">307</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
-</span><span id="AIGameServer-308"><a href="#AIGameServer-308"><span class="linenos">308</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer-309"><a href="#AIGameServer-309"><span class="linenos">309</span></a>            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load_map_data</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
-</span><span id="AIGameServer-310"><a href="#AIGameServer-310"><span class="linenos">310</span></a>
-</span><span id="AIGameServer-311"><a href="#AIGameServer-311"><span class="linenos">311</span></a>    <span class="c1"># --- Run Launcher ---</span>
-</span><span id="AIGameServer-312"><a href="#AIGameServer-312"><span class="linenos">312</span></a>
-</span><span id="AIGameServer-313"><a href="#AIGameServer-313"><span class="linenos">313</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8765</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer-314"><a href="#AIGameServer-314"><span class="linenos">314</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="AIGameServer-315"><a href="#AIGameServer-315"><span class="linenos">315</span></a><span class="sd">        Directly starts the game server instance.</span>
-</span><span id="AIGameServer-316"><a href="#AIGameServer-316"><span class="linenos">316</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="AIGameServer-317"><a href="#AIGameServer-317"><span class="linenos">317</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_app</span>
-</span><span id="AIGameServer-318"><a href="#AIGameServer-318"><span class="linenos">318</span></a>        <span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+</span><span id="AIGameServer-220"><a href="#AIGameServer-220"><span class="linenos">220</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_player_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-221"><a href="#AIGameServer-221"><span class="linenos">221</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-222"><a href="#AIGameServer-222"><span class="linenos">222</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-223"><a href="#AIGameServer-223"><span class="linenos">223</span></a>
+</span><span id="AIGameServer-224"><a href="#AIGameServer-224"><span class="linenos">224</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-225"><a href="#AIGameServer-225"><span class="linenos">225</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-226"><a href="#AIGameServer-226"><span class="linenos">226</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-227"><a href="#AIGameServer-227"><span class="linenos">227</span></a>
+</span><span id="AIGameServer-228"><a href="#AIGameServer-228"><span class="linenos">228</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-229"><a href="#AIGameServer-229"><span class="linenos">229</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-230"><a href="#AIGameServer-230"><span class="linenos">230</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-231"><a href="#AIGameServer-231"><span class="linenos">231</span></a>
+</span><span id="AIGameServer-232"><a href="#AIGameServer-232"><span class="linenos">232</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-233"><a href="#AIGameServer-233"><span class="linenos">233</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-234"><a href="#AIGameServer-234"><span class="linenos">234</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-235"><a href="#AIGameServer-235"><span class="linenos">235</span></a>
+</span><span id="AIGameServer-236"><a href="#AIGameServer-236"><span class="linenos">236</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-237"><a href="#AIGameServer-237"><span class="linenos">237</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-238"><a href="#AIGameServer-238"><span class="linenos">238</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-239"><a href="#AIGameServer-239"><span class="linenos">239</span></a>
+</span><span id="AIGameServer-240"><a href="#AIGameServer-240"><span class="linenos">240</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-241"><a href="#AIGameServer-241"><span class="linenos">241</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-242"><a href="#AIGameServer-242"><span class="linenos">242</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-243"><a href="#AIGameServer-243"><span class="linenos">243</span></a>
+</span><span id="AIGameServer-244"><a href="#AIGameServer-244"><span class="linenos">244</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-245"><a href="#AIGameServer-245"><span class="linenos">245</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-246"><a href="#AIGameServer-246"><span class="linenos">246</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-247"><a href="#AIGameServer-247"><span class="linenos">247</span></a>
+</span><span id="AIGameServer-248"><a href="#AIGameServer-248"><span class="linenos">248</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-249"><a href="#AIGameServer-249"><span class="linenos">249</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-250"><a href="#AIGameServer-250"><span class="linenos">250</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-251"><a href="#AIGameServer-251"><span class="linenos">251</span></a>
+</span><span id="AIGameServer-252"><a href="#AIGameServer-252"><span class="linenos">252</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer-253"><a href="#AIGameServer-253"><span class="linenos">253</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer-254"><a href="#AIGameServer-254"><span class="linenos">254</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span><span id="AIGameServer-255"><a href="#AIGameServer-255"><span class="linenos">255</span></a>
+</span><span id="AIGameServer-256"><a href="#AIGameServer-256"><span class="linenos">256</span></a>    <span class="c1"># --- Callback Delegations (matching GameInterface) ---</span>
+</span><span id="AIGameServer-257"><a href="#AIGameServer-257"><span class="linenos">257</span></a>
+</span><span id="AIGameServer-258"><a href="#AIGameServer-258"><span class="linenos">258</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-259"><a href="#AIGameServer-259"><span class="linenos">259</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-260"><a href="#AIGameServer-260"><span class="linenos">260</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
+</span><span id="AIGameServer-261"><a href="#AIGameServer-261"><span class="linenos">261</span></a>
+</span><span id="AIGameServer-262"><a href="#AIGameServer-262"><span class="linenos">262</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-263"><a href="#AIGameServer-263"><span class="linenos">263</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-264"><a href="#AIGameServer-264"><span class="linenos">264</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
+</span><span id="AIGameServer-265"><a href="#AIGameServer-265"><span class="linenos">265</span></a>
+</span><span id="AIGameServer-266"><a href="#AIGameServer-266"><span class="linenos">266</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-267"><a href="#AIGameServer-267"><span class="linenos">267</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-268"><a href="#AIGameServer-268"><span class="linenos">268</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span id="AIGameServer-269"><a href="#AIGameServer-269"><span class="linenos">269</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer-270"><a href="#AIGameServer-270"><span class="linenos">270</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_handshake</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span id="AIGameServer-271"><a href="#AIGameServer-271"><span class="linenos">271</span></a>
+</span><span id="AIGameServer-272"><a href="#AIGameServer-272"><span class="linenos">272</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-273"><a href="#AIGameServer-273"><span class="linenos">273</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-274"><a href="#AIGameServer-274"><span class="linenos">274</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+</span><span id="AIGameServer-275"><a href="#AIGameServer-275"><span class="linenos">275</span></a>
+</span><span id="AIGameServer-276"><a href="#AIGameServer-276"><span class="linenos">276</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-277"><a href="#AIGameServer-277"><span class="linenos">277</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-278"><a href="#AIGameServer-278"><span class="linenos">278</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+</span><span id="AIGameServer-279"><a href="#AIGameServer-279"><span class="linenos">279</span></a>
+</span><span id="AIGameServer-280"><a href="#AIGameServer-280"><span class="linenos">280</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="AIGameServer-281"><a href="#AIGameServer-281"><span class="linenos">281</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-282"><a href="#AIGameServer-282"><span class="linenos">282</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">()</span>
+</span><span id="AIGameServer-283"><a href="#AIGameServer-283"><span class="linenos">283</span></a>        <span class="k">return</span> <span class="p">{}</span>
+</span><span id="AIGameServer-284"><a href="#AIGameServer-284"><span class="linenos">284</span></a>
+</span><span id="AIGameServer-285"><a href="#AIGameServer-285"><span class="linenos">285</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_setup_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="AIGameServer-286"><a href="#AIGameServer-286"><span class="linenos">286</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-287"><a href="#AIGameServer-287"><span class="linenos">287</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">()</span>
+</span><span id="AIGameServer-288"><a href="#AIGameServer-288"><span class="linenos">288</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_setup_payload</span><span class="p">()</span>
+</span><span id="AIGameServer-289"><a href="#AIGameServer-289"><span class="linenos">289</span></a>
+</span><span id="AIGameServer-290"><a href="#AIGameServer-290"><span class="linenos">290</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-291"><a href="#AIGameServer-291"><span class="linenos">291</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-292"><a href="#AIGameServer-292"><span class="linenos">292</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">()</span>
+</span><span id="AIGameServer-293"><a href="#AIGameServer-293"><span class="linenos">293</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer-294"><a href="#AIGameServer-294"><span class="linenos">294</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_start_sim</span><span class="p">()</span>
+</span><span id="AIGameServer-295"><a href="#AIGameServer-295"><span class="linenos">295</span></a>
+</span><span id="AIGameServer-296"><a href="#AIGameServer-296"><span class="linenos">296</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_stop_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-297"><a href="#AIGameServer-297"><span class="linenos">297</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-298"><a href="#AIGameServer-298"><span class="linenos">298</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">()</span>
+</span><span id="AIGameServer-299"><a href="#AIGameServer-299"><span class="linenos">299</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer-300"><a href="#AIGameServer-300"><span class="linenos">300</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_stop_sim</span><span class="p">()</span>
+</span><span id="AIGameServer-301"><a href="#AIGameServer-301"><span class="linenos">301</span></a>
+</span><span id="AIGameServer-302"><a href="#AIGameServer-302"><span class="linenos">302</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_reset_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-303"><a href="#AIGameServer-303"><span class="linenos">303</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-304"><a href="#AIGameServer-304"><span class="linenos">304</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">()</span>
+</span><span id="AIGameServer-305"><a href="#AIGameServer-305"><span class="linenos">305</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer-306"><a href="#AIGameServer-306"><span class="linenos">306</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset_sim</span><span class="p">()</span>
+</span><span id="AIGameServer-307"><a href="#AIGameServer-307"><span class="linenos">307</span></a>
+</span><span id="AIGameServer-308"><a href="#AIGameServer-308"><span class="linenos">308</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-309"><a href="#AIGameServer-309"><span class="linenos">309</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">:</span>
+</span><span id="AIGameServer-310"><a href="#AIGameServer-310"><span class="linenos">310</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
+</span><span id="AIGameServer-311"><a href="#AIGameServer-311"><span class="linenos">311</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer-312"><a href="#AIGameServer-312"><span class="linenos">312</span></a>            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load_map_data</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
+</span><span id="AIGameServer-313"><a href="#AIGameServer-313"><span class="linenos">313</span></a>
+</span><span id="AIGameServer-314"><a href="#AIGameServer-314"><span class="linenos">314</span></a>    <span class="c1"># --- Run Launcher ---</span>
+</span><span id="AIGameServer-315"><a href="#AIGameServer-315"><span class="linenos">315</span></a>
+</span><span id="AIGameServer-316"><a href="#AIGameServer-316"><span class="linenos">316</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8765</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer-317"><a href="#AIGameServer-317"><span class="linenos">317</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AIGameServer-318"><a href="#AIGameServer-318"><span class="linenos">318</span></a><span class="sd">        Directly starts the game server instance.</span>
+</span><span id="AIGameServer-319"><a href="#AIGameServer-319"><span class="linenos">319</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="AIGameServer-320"><a href="#AIGameServer-320"><span class="linenos">320</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_app</span>
+</span><span id="AIGameServer-321"><a href="#AIGameServer-321"><span class="linenos">321</span></a>        <span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1595,6 +1595,26 @@ Allows developers to register game and viewer hooks using function decorators.</
     
 
                             </div>
+                            <div id="AIGameServer.on_player_handshake" class="classattr">
+                                        <input id="AIGameServer.on_player_handshake-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">on_player_handshake</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">func</span></span><span class="return-annotation">):</span></span>
+
+                <label class="view-source-button" for="AIGameServer.on_player_handshake-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#AIGameServer.on_player_handshake"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_player_handshake-220"><a href="#AIGameServer.on_player_handshake-220"><span class="linenos">220</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_player_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_player_handshake-221"><a href="#AIGameServer.on_player_handshake-221"><span class="linenos">221</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_player_handshake-222"><a href="#AIGameServer.on_player_handshake-222"><span class="linenos">222</span></a>        <span class="k">return</span> <span class="n">func</span>
+</span></pre></div>
+
+
+    
+
+                            </div>
                             <div id="AIGameServer.on_action" class="classattr">
                                         <input id="AIGameServer.on_action-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -1606,9 +1626,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_action"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_action-221"><a href="#AIGameServer.on_action-221"><span class="linenos">221</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_action-222"><a href="#AIGameServer.on_action-222"><span class="linenos">222</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_action-223"><a href="#AIGameServer.on_action-223"><span class="linenos">223</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_action-224"><a href="#AIGameServer.on_action-224"><span class="linenos">224</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_action-225"><a href="#AIGameServer.on_action-225"><span class="linenos">225</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_action-226"><a href="#AIGameServer.on_action-226"><span class="linenos">226</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1626,9 +1646,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_tick"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_tick-225"><a href="#AIGameServer.on_tick-225"><span class="linenos">225</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_tick-226"><a href="#AIGameServer.on_tick-226"><span class="linenos">226</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_tick-227"><a href="#AIGameServer.on_tick-227"><span class="linenos">227</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_tick-228"><a href="#AIGameServer.on_tick-228"><span class="linenos">228</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_tick-229"><a href="#AIGameServer.on_tick-229"><span class="linenos">229</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_tick-230"><a href="#AIGameServer.on_tick-230"><span class="linenos">230</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1646,9 +1666,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_get_state"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_get_state-229"><a href="#AIGameServer.on_get_state-229"><span class="linenos">229</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_get_state-230"><a href="#AIGameServer.on_get_state-230"><span class="linenos">230</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_get_state-231"><a href="#AIGameServer.on_get_state-231"><span class="linenos">231</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_get_state-232"><a href="#AIGameServer.on_get_state-232"><span class="linenos">232</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_get_state-233"><a href="#AIGameServer.on_get_state-233"><span class="linenos">233</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_get_state-234"><a href="#AIGameServer.on_get_state-234"><span class="linenos">234</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1666,9 +1686,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_get_setup"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_get_setup-233"><a href="#AIGameServer.on_get_setup-233"><span class="linenos">233</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_get_setup-234"><a href="#AIGameServer.on_get_setup-234"><span class="linenos">234</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_get_setup-235"><a href="#AIGameServer.on_get_setup-235"><span class="linenos">235</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_get_setup-236"><a href="#AIGameServer.on_get_setup-236"><span class="linenos">236</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_get_setup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_get_setup-237"><a href="#AIGameServer.on_get_setup-237"><span class="linenos">237</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_get_setup-238"><a href="#AIGameServer.on_get_setup-238"><span class="linenos">238</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1686,9 +1706,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_start"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_start-237"><a href="#AIGameServer.on_start-237"><span class="linenos">237</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_start-238"><a href="#AIGameServer.on_start-238"><span class="linenos">238</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_start-239"><a href="#AIGameServer.on_start-239"><span class="linenos">239</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_start-240"><a href="#AIGameServer.on_start-240"><span class="linenos">240</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_start</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_start-241"><a href="#AIGameServer.on_start-241"><span class="linenos">241</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_start-242"><a href="#AIGameServer.on_start-242"><span class="linenos">242</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1706,9 +1726,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_stop"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_stop-241"><a href="#AIGameServer.on_stop-241"><span class="linenos">241</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_stop-242"><a href="#AIGameServer.on_stop-242"><span class="linenos">242</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_stop-243"><a href="#AIGameServer.on_stop-243"><span class="linenos">243</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_stop-244"><a href="#AIGameServer.on_stop-244"><span class="linenos">244</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_stop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_stop-245"><a href="#AIGameServer.on_stop-245"><span class="linenos">245</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_stop-246"><a href="#AIGameServer.on_stop-246"><span class="linenos">246</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1726,9 +1746,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_reset"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_reset-245"><a href="#AIGameServer.on_reset-245"><span class="linenos">245</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_reset-246"><a href="#AIGameServer.on_reset-246"><span class="linenos">246</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_reset-247"><a href="#AIGameServer.on_reset-247"><span class="linenos">247</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_reset-248"><a href="#AIGameServer.on_reset-248"><span class="linenos">248</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_reset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_reset-249"><a href="#AIGameServer.on_reset-249"><span class="linenos">249</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_reset-250"><a href="#AIGameServer.on_reset-250"><span class="linenos">250</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1746,9 +1766,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_load_map"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_load_map-249"><a href="#AIGameServer.on_load_map-249"><span class="linenos">249</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_load_map-250"><a href="#AIGameServer.on_load_map-250"><span class="linenos">250</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_load_map-251"><a href="#AIGameServer.on_load_map-251"><span class="linenos">251</span></a>        <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_load_map-252"><a href="#AIGameServer.on_load_map-252"><span class="linenos">252</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">on_load_map</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+</span><span id="AIGameServer.on_load_map-253"><a href="#AIGameServer.on_load_map-253"><span class="linenos">253</span></a>        <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span> <span class="o">=</span> <span class="n">func</span>
+</span><span id="AIGameServer.on_load_map-254"><a href="#AIGameServer.on_load_map-254"><span class="linenos">254</span></a>        <span class="k">return</span> <span class="n">func</span>
 </span></pre></div>
 
 
@@ -1766,9 +1786,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_player_connect"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_player_connect-255"><a href="#AIGameServer.on_player_connect-255"><span class="linenos">255</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.on_player_connect-256"><a href="#AIGameServer.on_player_connect-256"><span class="linenos">256</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.on_player_connect-257"><a href="#AIGameServer.on_player_connect-257"><span class="linenos">257</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_player_connect-258"><a href="#AIGameServer.on_player_connect-258"><span class="linenos">258</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_connect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.on_player_connect-259"><a href="#AIGameServer.on_player_connect-259"><span class="linenos">259</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.on_player_connect-260"><a href="#AIGameServer.on_player_connect-260"><span class="linenos">260</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_connect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1794,9 +1814,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_player_disconnect"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_player_disconnect-259"><a href="#AIGameServer.on_player_disconnect-259"><span class="linenos">259</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.on_player_disconnect-260"><a href="#AIGameServer.on_player_disconnect-260"><span class="linenos">260</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.on_player_disconnect-261"><a href="#AIGameServer.on_player_disconnect-261"><span class="linenos">261</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_player_disconnect-262"><a href="#AIGameServer.on_player_disconnect-262"><span class="linenos">262</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_player_disconnect</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.on_player_disconnect-263"><a href="#AIGameServer.on_player_disconnect-263"><span class="linenos">263</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.on_player_disconnect-264"><a href="#AIGameServer.on_player_disconnect-264"><span class="linenos">264</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_disconnect_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1815,20 +1835,31 @@ Allows developers to register game and viewer hooks using function decorators.</
                                         <input id="AIGameServer.on_handshake-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
             
-        <span class="def">def</span>
-        <span class="name">on_handshake</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">func</span></span><span class="return-annotation">):</span></span>
+        <span class="def">async def</span>
+        <span class="name">on_handshake</span><span class="signature pdoc-code condensed">(<span class="param"><span class="bp">self</span>, </span><span class="param"><span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span>, </span><span class="param"><span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="AIGameServer.on_handshake-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_handshake"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_handshake-322"><a href="#AIGameServer.on_handshake-322"><span class="linenos">322</span></a><span class="k">def</span><span class="w"> </span><span class="nf">_on_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
-</span><span id="AIGameServer.on_handshake-323"><a href="#AIGameServer.on_handshake-323"><span class="linenos">323</span></a>    <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span> <span class="o">=</span> <span class="n">func</span>
-</span><span id="AIGameServer.on_handshake-324"><a href="#AIGameServer.on_handshake-324"><span class="linenos">324</span></a>    <span class="k">return</span> <span class="n">func</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_handshake-266"><a href="#AIGameServer.on_handshake-266"><span class="linenos">266</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_handshake</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.on_handshake-267"><a href="#AIGameServer.on_handshake-267"><span class="linenos">267</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.on_handshake-268"><a href="#AIGameServer.on_handshake-268"><span class="linenos">268</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_handshake_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+</span><span id="AIGameServer.on_handshake-269"><a href="#AIGameServer.on_handshake-269"><span class="linenos">269</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer.on_handshake-270"><a href="#AIGameServer.on_handshake-270"><span class="linenos">270</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_handshake</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
 </span></pre></div>
 
 
-    
+            <div class="docstring"><p>Called after the initial handshake to process metadata (mode, id, etc).</p>
+
+<h6 id="arguments">Arguments:</h6>
+
+<ul>
+<li><strong>player_id (int):</strong>  The ID of the player (0 for system/frontend).</li>
+<li><strong>data (Dict[str, Any]):</strong>  The handshake payload.</li>
+</ul>
+</div>
+
 
                             </div>
                             <div id="AIGameServer.process_action" class="classattr">
@@ -1842,9 +1873,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.process_action"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.process_action-269"><a href="#AIGameServer.process_action-269"><span class="linenos">269</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.process_action-270"><a href="#AIGameServer.process_action-270"><span class="linenos">270</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.process_action-271"><a href="#AIGameServer.process_action-271"><span class="linenos">271</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.process_action-272"><a href="#AIGameServer.process_action-272"><span class="linenos">272</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">process_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">player_id</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">action</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.process_action-273"><a href="#AIGameServer.process_action-273"><span class="linenos">273</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.process_action-274"><a href="#AIGameServer.process_action-274"><span class="linenos">274</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_cb</span><span class="p">(</span><span class="n">player_id</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1871,9 +1902,9 @@ Allows developers to register game and viewer hooks using function decorators.</
 
     </div>
     <a class="headerlink" href="#AIGameServer.tick"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.tick-273"><a href="#AIGameServer.tick-273"><span class="linenos">273</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.tick-274"><a href="#AIGameServer.tick-274"><span class="linenos">274</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.tick-275"><a href="#AIGameServer.tick-275"><span class="linenos">275</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.tick-276"><a href="#AIGameServer.tick-276"><span class="linenos">276</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">tick</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dt</span><span class="p">:</span> <span class="nb">float</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.tick-277"><a href="#AIGameServer.tick-277"><span class="linenos">277</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.tick-278"><a href="#AIGameServer.tick-278"><span class="linenos">278</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_tick_cb</span><span class="p">(</span><span class="n">dt</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -1900,10 +1931,10 @@ Handles physics and game logic updates.</p>
 
     </div>
     <a class="headerlink" href="#AIGameServer.get_state"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.get_state-277"><a href="#AIGameServer.get_state-277"><span class="linenos">277</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="AIGameServer.get_state-278"><a href="#AIGameServer.get_state-278"><span class="linenos">278</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.get_state-279"><a href="#AIGameServer.get_state-279"><span class="linenos">279</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">()</span>
-</span><span id="AIGameServer.get_state-280"><a href="#AIGameServer.get_state-280"><span class="linenos">280</span></a>        <span class="k">return</span> <span class="p">{}</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.get_state-280"><a href="#AIGameServer.get_state-280"><span class="linenos">280</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_state</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="AIGameServer.get_state-281"><a href="#AIGameServer.get_state-281"><span class="linenos">281</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.get_state-282"><a href="#AIGameServer.get_state-282"><span class="linenos">282</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_cb</span><span class="p">()</span>
+</span><span id="AIGameServer.get_state-283"><a href="#AIGameServer.get_state-283"><span class="linenos">283</span></a>        <span class="k">return</span> <span class="p">{}</span>
 </span></pre></div>
 
 
@@ -1929,10 +1960,10 @@ Handles physics and game logic updates.</p>
 
     </div>
     <a class="headerlink" href="#AIGameServer.get_setup_payload"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.get_setup_payload-282"><a href="#AIGameServer.get_setup_payload-282"><span class="linenos">282</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_setup_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="AIGameServer.get_setup_payload-283"><a href="#AIGameServer.get_setup_payload-283"><span class="linenos">283</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.get_setup_payload-284"><a href="#AIGameServer.get_setup_payload-284"><span class="linenos">284</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">()</span>
-</span><span id="AIGameServer.get_setup_payload-285"><a href="#AIGameServer.get_setup_payload-285"><span class="linenos">285</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_setup_payload</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.get_setup_payload-285"><a href="#AIGameServer.get_setup_payload-285"><span class="linenos">285</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">get_setup_payload</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="AIGameServer.get_setup_payload-286"><a href="#AIGameServer.get_setup_payload-286"><span class="linenos">286</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.get_setup_payload-287"><a href="#AIGameServer.get_setup_payload-287"><span class="linenos">287</span></a>            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_setup_cb</span><span class="p">()</span>
+</span><span id="AIGameServer.get_setup_payload-288"><a href="#AIGameServer.get_setup_payload-288"><span class="linenos">288</span></a>        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">get_setup_payload</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -1958,11 +1989,11 @@ Handles physics and game logic updates.</p>
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_start_sim"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_start_sim-287"><a href="#AIGameServer.on_start_sim-287"><span class="linenos">287</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.on_start_sim-288"><a href="#AIGameServer.on_start_sim-288"><span class="linenos">288</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.on_start_sim-289"><a href="#AIGameServer.on_start_sim-289"><span class="linenos">289</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">()</span>
-</span><span id="AIGameServer.on_start_sim-290"><a href="#AIGameServer.on_start_sim-290"><span class="linenos">290</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer.on_start_sim-291"><a href="#AIGameServer.on_start_sim-291"><span class="linenos">291</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_start_sim</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_start_sim-290"><a href="#AIGameServer.on_start_sim-290"><span class="linenos">290</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_start_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.on_start_sim-291"><a href="#AIGameServer.on_start_sim-291"><span class="linenos">291</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.on_start_sim-292"><a href="#AIGameServer.on_start_sim-292"><span class="linenos">292</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_start_cb</span><span class="p">()</span>
+</span><span id="AIGameServer.on_start_sim-293"><a href="#AIGameServer.on_start_sim-293"><span class="linenos">293</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer.on_start_sim-294"><a href="#AIGameServer.on_start_sim-294"><span class="linenos">294</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_start_sim</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -1982,11 +2013,11 @@ Handles physics and game logic updates.</p>
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_stop_sim"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_stop_sim-293"><a href="#AIGameServer.on_stop_sim-293"><span class="linenos">293</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_stop_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.on_stop_sim-294"><a href="#AIGameServer.on_stop_sim-294"><span class="linenos">294</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.on_stop_sim-295"><a href="#AIGameServer.on_stop_sim-295"><span class="linenos">295</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">()</span>
-</span><span id="AIGameServer.on_stop_sim-296"><a href="#AIGameServer.on_stop_sim-296"><span class="linenos">296</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer.on_stop_sim-297"><a href="#AIGameServer.on_stop_sim-297"><span class="linenos">297</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_stop_sim</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_stop_sim-296"><a href="#AIGameServer.on_stop_sim-296"><span class="linenos">296</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_stop_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.on_stop_sim-297"><a href="#AIGameServer.on_stop_sim-297"><span class="linenos">297</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.on_stop_sim-298"><a href="#AIGameServer.on_stop_sim-298"><span class="linenos">298</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_stop_cb</span><span class="p">()</span>
+</span><span id="AIGameServer.on_stop_sim-299"><a href="#AIGameServer.on_stop_sim-299"><span class="linenos">299</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer.on_stop_sim-300"><a href="#AIGameServer.on_stop_sim-300"><span class="linenos">300</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_stop_sim</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -2006,11 +2037,11 @@ Handles physics and game logic updates.</p>
 
     </div>
     <a class="headerlink" href="#AIGameServer.on_reset_sim"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_reset_sim-299"><a href="#AIGameServer.on_reset_sim-299"><span class="linenos">299</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_reset_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.on_reset_sim-300"><a href="#AIGameServer.on_reset_sim-300"><span class="linenos">300</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.on_reset_sim-301"><a href="#AIGameServer.on_reset_sim-301"><span class="linenos">301</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">()</span>
-</span><span id="AIGameServer.on_reset_sim-302"><a href="#AIGameServer.on_reset_sim-302"><span class="linenos">302</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer.on_reset_sim-303"><a href="#AIGameServer.on_reset_sim-303"><span class="linenos">303</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset_sim</span><span class="p">()</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.on_reset_sim-302"><a href="#AIGameServer.on_reset_sim-302"><span class="linenos">302</span></a>    <span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">on_reset_sim</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.on_reset_sim-303"><a href="#AIGameServer.on_reset_sim-303"><span class="linenos">303</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.on_reset_sim-304"><a href="#AIGameServer.on_reset_sim-304"><span class="linenos">304</span></a>            <span class="k">await</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reset_cb</span><span class="p">()</span>
+</span><span id="AIGameServer.on_reset_sim-305"><a href="#AIGameServer.on_reset_sim-305"><span class="linenos">305</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer.on_reset_sim-306"><a href="#AIGameServer.on_reset_sim-306"><span class="linenos">306</span></a>            <span class="k">await</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">on_reset_sim</span><span class="p">()</span>
 </span></pre></div>
 
 
@@ -2030,11 +2061,11 @@ Handles physics and game logic updates.</p>
 
     </div>
     <a class="headerlink" href="#AIGameServer.load_map_data"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.load_map_data-305"><a href="#AIGameServer.load_map_data-305"><span class="linenos">305</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.load_map_data-306"><a href="#AIGameServer.load_map_data-306"><span class="linenos">306</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">:</span>
-</span><span id="AIGameServer.load_map_data-307"><a href="#AIGameServer.load_map_data-307"><span class="linenos">307</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
-</span><span id="AIGameServer.load_map_data-308"><a href="#AIGameServer.load_map_data-308"><span class="linenos">308</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="AIGameServer.load_map_data-309"><a href="#AIGameServer.load_map_data-309"><span class="linenos">309</span></a>            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load_map_data</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.load_map_data-308"><a href="#AIGameServer.load_map_data-308"><span class="linenos">308</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">load_map_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">map_data</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.load_map_data-309"><a href="#AIGameServer.load_map_data-309"><span class="linenos">309</span></a>        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">:</span>
+</span><span id="AIGameServer.load_map_data-310"><a href="#AIGameServer.load_map_data-310"><span class="linenos">310</span></a>            <span class="bp">self</span><span class="o">.</span><span class="n">_load_map_cb</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
+</span><span id="AIGameServer.load_map_data-311"><a href="#AIGameServer.load_map_data-311"><span class="linenos">311</span></a>        <span class="k">else</span><span class="p">:</span>
+</span><span id="AIGameServer.load_map_data-312"><a href="#AIGameServer.load_map_data-312"><span class="linenos">312</span></a>            <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">load_map_data</span><span class="p">(</span><span class="n">map_data</span><span class="p">)</span>
 </span></pre></div>
 
 
@@ -2054,12 +2085,12 @@ Handles physics and game logic updates.</p>
 
     </div>
     <a class="headerlink" href="#AIGameServer.run"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.run-313"><a href="#AIGameServer.run-313"><span class="linenos">313</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8765</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="AIGameServer.run-314"><a href="#AIGameServer.run-314"><span class="linenos">314</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="AIGameServer.run-315"><a href="#AIGameServer.run-315"><span class="linenos">315</span></a><span class="sd">        Directly starts the game server instance.</span>
-</span><span id="AIGameServer.run-316"><a href="#AIGameServer.run-316"><span class="linenos">316</span></a><span class="sd">        &quot;&quot;&quot;</span>
-</span><span id="AIGameServer.run-317"><a href="#AIGameServer.run-317"><span class="linenos">317</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_app</span>
-</span><span id="AIGameServer.run-318"><a href="#AIGameServer.run-318"><span class="linenos">318</span></a>        <span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="AIGameServer.run-316"><a href="#AIGameServer.run-316"><span class="linenos">316</span></a>    <span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;0.0.0.0&quot;</span><span class="p">,</span> <span class="n">port</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">8765</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="AIGameServer.run-317"><a href="#AIGameServer.run-317"><span class="linenos">317</span></a><span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="AIGameServer.run-318"><a href="#AIGameServer.run-318"><span class="linenos">318</span></a><span class="sd">        Directly starts the game server instance.</span>
+</span><span id="AIGameServer.run-319"><a href="#AIGameServer.run-319"><span class="linenos">319</span></a><span class="sd">        &quot;&quot;&quot;</span>
+</span><span id="AIGameServer.run-320"><a href="#AIGameServer.run-320"><span class="linenos">320</span></a>        <span class="kn">from</span><span class="w"> </span><span class="nn">.main</span><span class="w"> </span><span class="kn">import</span> <span class="n">run_app</span>
+</span><span id="AIGameServer.run-321"><a href="#AIGameServer.run-321"><span class="linenos">321</span></a>        <span class="n">run_app</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">host</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
 </span></pre></div>
 
 
