@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dino Jump — AI Arcade</title>
+  
+  <!-- Premium Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Nord UI Theme -->
+  <link rel="stylesheet" href="/aigf/nord.css">
+
+  <style>
+    body {
+      background-color: #1a1e25;
+      color: var(--text-primary);
+      font-family: var(--font-family);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2e3440 0%, #242933 100%);
+      border-bottom: 1px solid var(--nord3);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, var(--nord8) 0%, var(--nord7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 30px;
+      flex-grow: 1;
+    }
+
+    @media (max-width: 1000px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .game-window {
+      background-color: var(--bg-surface);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 800px;
+      background-color: #242933;
+      margin: 0 auto;
+    }
+
+    .glass-card {
+      background: rgba(46, 52, 64, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--nord6);
+      margin-top: 0;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--nord3);
+      padding-bottom: 8px;
+    }
+
+    .score-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--nord8);
+      text-shadow: 0 0 10px rgba(136, 192, 208, 0.3);
+    }
+
+    .key-badge {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--nord1);
+      border: 1px solid var(--nord3);
+      color: var(--nord6);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>DINO JUMP</h1>
+    </div>
+    <div class="badge badge-running" id="lobbyBadge">SIMULATING</div>
+  </header>
+
+  <div class="app-container">
+    
+    <!-- Game Visualizer -->
+    <div class="game-window">
+      <div class="game-header">
+        <div class="game-title">CHROME OFFLINE REPLICA</div>
+        <div class="badge badge-lobby" style="background-color: var(--nord12);">ACTIVE TRACK</div>
+      </div>
+      
+      <canvas id="gameCanvas" width="800" height="400"></canvas>
+      
+      <div style="background: rgba(46, 52, 64, 0.85); border-top:1px solid var(--nord3); padding:15px; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong style="color: var(--nord8);">Keyboard Override:</strong> Focus the game screen and press <span class="key-badge">SPACEBAR</span> or <span class="key-badge">▲ ARROW</span> to jump!
+        </div>
+      </div>
+    </div>
+
+    <!-- Side Panel Stats -->
+    <div class="sidebar" style="display:flex; flex-direction:column; gap:25px;">
+      
+      <div class="glass-card">
+        <h3 class="card-title">ARCADE SCORE HUD</h3>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:15px;">
+          <div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase;">Score</div>
+            <div class="score-badge" id="currentScore">00000</div>
+          </div>
+          <div>
+            <div style="font-size:0.8rem; color:var(--text-secondary); text-transform:uppercase;">High Score</div>
+            <div class="score-badge" id="highScore" style="color:var(--nord14);">00000</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <h3 class="card-title">INTEGRATION SPECS</h3>
+        <div style="font-size:0.9rem; line-height:1.6; color:var(--nord4);">
+          <p>This replica demonstrates a real-time high frame rate game loop executing at 30 ticks per second.</p>
+          <ul style="padding-left: 20px; margin: 10px 0;">
+            <li>Package: <code class="key-badge" style="font-size:0.75rem;">aigf</code></li>
+            <li>Routing: <code class="key-badge" style="font-size:0.75rem;">/aigf/framework.js</code></li>
+            <li>Styling: <code class="key-badge" style="font-size:0.75rem;">/aigf/nord.css</code></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { GameClient } from "/aigf/framework.js";
+
+    const canvas = document.getElementById("gameCanvas");
+    const ctx = canvas.getContext("2d");
+    const currentScoreEl = document.getElementById("currentScore");
+    const highScoreEl = document.getElementById("highScore");
+
+    // Initialize GameClient
+    const client = new GameClient(8765);
+
+    // Scrolling decorative background clouds
+    let clouds = [
+      { x: 200, y: 80, size: 40, speed: 0.2 },
+      { x: 500, y: 120, size: 55, speed: 0.15 },
+      { x: 750, y: 60, size: 30, speed: 0.25 },
+    ];
+
+    // Local key listeners to send action to server
+    window.addEventListener("keydown", (e) => {
+      if (e.key === " " || e.key === "ArrowUp") {
+        e.preventDefault();
+        client.sendAction({ action: "jump" });
+      }
+    });
+
+    client.onUpdate = (data) => {
+      // Clear screen
+      ctx.fillStyle = "#2e3440";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Render scrolling clouds
+      drawClouds();
+
+      // Render ground line
+      ctx.strokeStyle = "rgba(76, 86, 106, 0.8)";
+      ctx.lineWidth = 4;
+      ctx.beginPath();
+      ctx.moveTo(0, 300);
+      ctx.lineTo(800, 300);
+      ctx.stroke();
+
+      // Draw players/Dino
+      if (data.players) {
+        data.players.forEach(p => {
+          if (p.alive) {
+            drawDino(p.x, p.y, p.color || "#88c0d0");
+            currentScoreEl.textContent = String(p.score).padStart(5, '0');
+          } else {
+            // Draw crashed dino
+            drawCrashedDino(p.x, p.y);
+          }
+        });
+      }
+
+      // Draw obstacles (cacti)
+      if (data.obstacles) {
+        data.obstacles.forEach(obs => {
+          drawCactus(obs.x, obs.y, obs.width, obs.height);
+        });
+      }
+
+      // High score update
+      if (data.high_score !== undefined) {
+        highScoreEl.textContent = String(data.high_score).padStart(5, '0');
+      }
+    };
+
+    function drawClouds() {
+      ctx.fillStyle = "#3b4252";
+      clouds.forEach(c => {
+        c.x -= c.speed;
+        if (c.x + c.size * 2 < 0) {
+          c.x = 800 + c.size;
+        }
+
+        ctx.beginPath();
+        ctx.arc(c.x, c.y, c.size * 0.4, 0, 2*Math.PI);
+        ctx.arc(c.x + c.size * 0.3, c.y - c.size * 0.1, c.size * 0.5, 0, 2*Math.PI);
+        ctx.arc(c.x + c.size * 0.6, c.y, c.size * 0.4, 0, 2*Math.PI);
+        ctx.closePath();
+        ctx.fill();
+      });
+    }
+
+    function drawDino(x, y, color) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      // Neon Shadow
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = color;
+      ctx.fillStyle = color;
+
+      // Draw Dino Body (Aesthetic flat style)
+      // Head
+      ctx.fillRect(16, 0, 24, 16);
+      ctx.fillRect(36, 6, 4, 4); // snout/mouth snout
+      
+      // Eye (Nord Dark color)
+      ctx.fillStyle = "#2e3440";
+      ctx.fillRect(22, 4, 3, 3);
+      ctx.fillStyle = color;
+
+      // Neck & Back
+      ctx.fillRect(16, 16, 12, 16);
+      ctx.fillRect(4, 20, 24, 16);
+
+      // Tail
+      ctx.fillRect(0, 22, 4, 8);
+      ctx.fillRect(2, 24, 4, 8);
+
+      // Alternating leg animations
+      const legFrame = Math.floor(Date.now() / 100) % 2 === 0;
+      ctx.fillStyle = "#eceff4";
+      if (legFrame) {
+        ctx.fillRect(8, 36, 4, 12);  // Left Leg down
+        ctx.fillRect(20, 36, 4, 8);   // Right Leg bent
+      } else {
+        ctx.fillRect(8, 36, 4, 8);   // Left Leg bent
+        ctx.fillRect(20, 36, 4, 12);  // Right Leg down
+      }
+
+      ctx.restore();
+    }
+
+    function drawCrashedDino(x, y) {
+      ctx.save();
+      ctx.translate(x, y);
+      
+      ctx.fillStyle = "#bf616a"; // Red crash color
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = "#bf616a";
+
+      // Crashed Body (laying down head)
+      ctx.fillRect(16, 12, 24, 16);
+      
+      // X eyes (Crashed)
+      ctx.strokeStyle = "#eceff4";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.moveTo(22, 16); ctx.lineTo(26, 20);
+      ctx.moveTo(26, 16); ctx.lineTo(22, 20);
+      ctx.stroke();
+
+      ctx.fillRect(0, 24, 28, 12); // flat body
+      ctx.fillRect(0, 36, 4, 4);   // legs tucked
+
+      ctx.restore();
+    }
+
+    function drawCactus(x, y, w, h) {
+      ctx.save();
+      ctx.translate(x, y);
+
+      ctx.fillStyle = "#a3be8c"; // Cactus Green
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "#a3be8c";
+
+      // Main center trunk
+      ctx.fillRect(w/2 - 4, 0, 8, h);
+
+      // Left branch
+      ctx.fillRect(0, h/2 - 4, w/2, 6);
+      ctx.fillRect(0, h/4, 6, h/4 + 4);
+
+      // Right branch
+      ctx.fillRect(w/2, h/3, w/2, 6);
+      ctx.fillRect(w - 6, h/6, 6, h/6 + 10);
+
+      ctx.restore();
+    }
+  </script>
+</body>
+</html>

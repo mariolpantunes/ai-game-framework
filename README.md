@@ -1,101 +1,153 @@
-# <img src="assets/logo.svg" alt="AI Game Framework logo" width="128" height="128" align="middle"> AI Game Framework
+# <img src="assets/logo.svg" alt="AI Game Framework logo" width="128" height="128" align="middle"> AI Game Framework (aigf)
 
-![Python Version](https://img.shields.io/badge/python-3.14-blue)
-![GitHub License](https://img.shields.io/github/license/mariolpantunes/ai-game-framework)
-![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mariolpantunes/ai-game-framework/main.yml)
-![GitHub last commit](https://img.shields.io/github/last-commit/mariolpantunes/ai-game-framework)
+[![PyPI - Version](https://img.shields.io/badge/pypi-v1.0.0-blue)](https://pypi.org/project/ai-game-framework)
+[![Python Version](https://img.shields.io/badge/python-%3E%3D3.10-blue)](https://pypi.org/project/ai-game-framework)
+[![GitHub License](https://img.shields.io/github/license/mariolpantunes/ai-game-framework)](LICENSE)
+[![GitHub Actions Workflow Status](https://img.shields.io/github/actions/workflow/status/mariolpantunes/ai-game-framework/main.yml)](https://github.com/mariolpantunes/ai-game-framework/actions)
 
-**AI Game Framework** is a unified infrastructure designed to support the development and optimization of AI agents across various games. It abstracts the communication scaffolding (WebSockets, FastAPI) and provides a clean, 2-state API (`LOBBY` and `RUNNING`) to handle both real-time and discrete-time simulations.
+An elegant, high-performance, asynchronous Python library designed to streamline the development, testing, and optimization of AI agents in both real-time and discrete-time games.
 
-## Core Principles
+Inspired by modern web micro-frameworks like **FastAPI** and **Flask**, `aigf` allows developers to build games using clean functional decorators or object-oriented classes. It bundles a fully integrated lightweight HTTP/WebSocket server that automatically serves custom visualizers along with packaged styling (`nord.css`) and client-side logic (`framework.js`).
 
-1.  **Strict Volume Isolation**: Neither game logic nor framework logic is baked into Docker images. All code is injected at runtime via volumes.
-2.  **Universal Scaffolding**: One centralized FastAPI/WebSocket backend supports unlimited agents and exactly one visualization frontend.
-3.  **Performance Optimized**: Uses `orjson` and asynchronous I/O to support large agent populations (e.g., neuroevolution) on a single core.
-4.  **Neuroevolution Ready**: Supports dynamic agent joining and explicit lifecycle states to synchronize Blind Optimization generations.
+---
 
-## Structure
+## Features
 
-### Framework Repository
+1. **Lightweight & High Performance**: Utilizes `websockets` and async/await event loops to easily handle large volumes of concurrent agents (perfect for neuroevolution or RL optimization).
+2. **Flexible API Models**:
+   * **Decorated Hooks (`AIGameServer`)**: FastAPI/Flask style callbacks for connection, action, tick, and state-retrieval events.
+   * **Class Inheritance (`GameInterface`)**: Rigid Object-Oriented structure for strict architectural isolation.
+3. **Zero-Dependency Web Server**: Houses an integrated static asset server, letting developers serve a rich HTML/JS/CSS frontend directly from Python.
+4. **Pre-packaged UI Ecosystem**: Standardized layout sheets (`nord.css`) and event handlers (`framework.js`) are packaged inside the wheel distribution and served natively.
+5. **No Docker Required**: Run natively on host machines inside virtual environments.
+
+---
+
+## 📦 Installation
+
+Add it directly to your game project's `requirements.txt`:
+
 ```text
-ai-game-framework/
-├── compose.yml          # Base service definition
-├── Dockerfile           # Python runtime + framework dependencies
-├── entrypoint.sh        # Runtime dependency installer
-├── framework/           # Core Python package
-└── frontend/            # Unified JS WebSocket client
+ai-game-framework >= 1.0.0
 ```
 
-### Game Project (Submodule Integration)
-```text
-game-repo/
-├── agents/              # Student/Agent scripts
-├── framework/           # Git Submodule -> ai-game-framework
-├── game/                # Isolated game logic (Python/HTML/JS)
-└── compose.yml          # Overrides and Volume mappings
+Or install it directly from source/PyPI:
+
+```bash
+pip install .
 ```
 
-## API Overview
+---
 
-### Backend (`GameInterface`)
-Games must implement the `GameInterface` to handle actions and state:
+## 🛠️ How it Works: Racetrack Webpage Integration
 
-```python
-from framework import GameInterface, GameState
-
-class MyGame(GameInterface):
-    async def on_player_connect(self, player_id):
-        # Decide when to start the game
-        if len(self.players) == 100:
-            self.state = GameState.RUNNING
-
-    async def tick(self, dt):
-        # Update physics/logic every frame
-        pass
-
-    def get_state(self):
-        # Return full state for frontend
-        return {"birds": [...]}
-```
-
-### Frontend (`GameClient`)
-The frontend visualization uses a simple event-based client:
+The framework handles HTTP requests through a specialized static file server routing mechanism. 
+When a web browser connects to the server (e.g. `http://localhost:8765/`):
+1. **HTML Serving**: The server checks the game's `viewer/` or `frontend/` directory for an `index.html` file and serves it as the root webpage.
+2. **Asset Bundling**: The custom HTML imports `/aigf/framework.js` or `/aigf/nord.css`.
+3. **Automatic Routing**: The framework's internal path resolver interceptor (`find_static_file`) catches requests starting with `/aigf/` or `/framework/` and automatically serves the embedded assets bundled inside the pip package wheel. No Nginx, complex volume binds, or system-wide assets are required!
 
 ```javascript
-import { GameClient } from "/framework/framework.js";
+// Inside your viewer/index.html
+import { GameClient } from "/aigf/framework.js";
 
-const client = new GameClient();
+// Instantiates a client connecting automatically to ws://localhost:8765/ws
+const client = new GameClient(8765);
+
 client.onUpdate((state) => {
-    // Draw state to Canvas
+  // Renders the real-time game state coordinates on canvas
+  console.log("Visualizer Update:", state);
 });
 ```
 
-## Installation
+---
 
-Add this framework as a git submodule to your project:
+## 💡 Quick Start: Fast API Decorated Server
 
+Creating a game server is exceptionally quick. Register game loops and player interactions with function annotations:
+
+```python
+from aigf.interface import AIGameServer, GameState
+
+# 1. Initialize a real-time server operating at 30 FPS
+app = AIGameServer(is_real_time=True, fps=30)
+players = {}
+
+# 2. Player handshake connector
+@app.on_connect
+async def connect(player_id: int):
+    players[player_id] = {"x": 400.0, "y": 300.0, "score": 0}
+    if len(players) >= 2:
+        app.state = GameState.RUNNING
+
+# 3. Real-time game tick
+@app.on_tick
+async def tick(dt: float):
+    for p in players.values():
+        p["x"] += 10.0 * dt  # Move players slightly right
+
+# 4. Action receiver hook
+@app.on_action
+async def action(player_id: int, act: dict):
+    if act.get("cmd") == "jump":
+        players[player_id]["y"] -= 50.0
+
+# 5. Visualizer state builder
+@app.on_get_state
+def get_state() -> dict:
+    return {"players": list(players.values())}
+
+# 6. Launch the server
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=8765)
+```
+
+---
+
+## 🎮 Interactive Examples
+
+The package includes three fully functioning, high-quality sample games demonstrating the API:
+
+### 1. Dino Jump (Real-Time Game)
+Located in `examples/dino_jump/`. Mimics Chrome's offline dinosaur game.
+* **Start Server**: `python3 examples/dino_jump/main.py`
+* **Play in Browser**: Open `http://localhost:8765/` (press Space to jump).
+* **Play in Terminal**: Run `python3 examples/dino_jump/manual_agent.py`.
+
+### 2. Hangman (Discrete/Turn-Based Game)
+Located in `examples/hangman/`. A turn-based word-discovery game with zero ticks.
+* **Start Server**: `python3 examples/hangman/main.py`
+* **Play in Browser**: Open `http://localhost:8765/` (click or type letters).
+* **Play in Terminal**: Run `python3 examples/hangman/manual_agent.py`.
+
+### 3. Neon GP (Race Game)
+Located in `examples/race_game/`. A real-time oval track racing simulation with off-road drag physics.
+* **Start Server**: `python3 examples/race_game/main.py`
+* **Play in Browser**: Open `http://localhost:8765/`.
+* **Play in Terminal**: Run `python3 examples/race_game/manual_agent.py` (steer with arrows/WASD).
+
+---
+
+## 🧪 Running Unit Tests
+Validate code changes using pytest:
 ```bash
-git submodule add https://github.com/mariolpantunes/ai-game-framework framework
+PYTHONPATH=src:. pytest
 ```
 
-Then, include the framework's configuration in your `compose.yml`:
+---
 
-```yaml
-include:
-  - framework/compose.yml
-```
-
-## Documentation
-
-The library uses standard Python docstrings. To generate documentation locally:
-
+## 📚 Generating Documentation
+The codebase utilizes Google-style docstrings. Build documentation into standard HTML using `pdoc`:
 ```bash
-pdoc --math -d google -o docs framework
+pip install pdoc
+PYTHONPATH=src pdoc --math -d google -o docs_out aigf
 ```
+
+---
 
 ## Authors
 
-  * **Mário Antunes** - [mariolpantunes](https://github.com/mariolpantunes)
+* **Mário Antunes** - [mariolpantunes](https://github.com/mariolpantunes)
 
 ## License
 

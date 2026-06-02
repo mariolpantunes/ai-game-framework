@@ -1,7 +1,3 @@
-fastapi
-uvicorn
 websockets
-orjson
 pytest
 pytest-asyncio
-httpx

@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neon GP — AI Racetrack Simulator</title>
+  
+  <!-- Premium Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Base Framework Styling -->
+  <link rel="stylesheet" href="/aigf/nord.css">
+
+  <style>
+    :root {
+      --neon-glow-cyan: 0 0 15px rgba(136, 192, 208, 0.4);
+      --neon-glow-green: 0 0 15px rgba(163, 190, 140, 0.4);
+      --neon-glow-red: 0 0 15px rgba(191, 97, 106, 0.4);
+    }
+
+    body {
+      background-color: #1a1e25; /* Even deeper dark base */
+      color: var(--text-primary);
+      font-family: var(--font-family);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Elegant Glassmorphism Layout */
+    .app-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      display: grid;
+      grid-template-columns: 1fr 360px;
+      gap: 30px;
+      flex-grow: 1;
+    }
+
+    @media (max-width: 1100px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    header {
+      background: linear-gradient(135deg, #2e3440 0%, #242933 100%);
+      border-bottom: 1px solid var(--nord3);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, var(--nord8) 0%, var(--nord7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand span {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.8rem;
+      padding: 4px 8px;
+      background: var(--nord1);
+      border: 1px solid var(--nord3);
+      border-radius: 4px;
+      color: var(--nord8);
+    }
+
+    .control-center {
+      display: flex;
+      gap: 12px;
+    }
+
+    /* Viewer Board and Canvas */
+    .main-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .game-window {
+      background-color: var(--bg-surface);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+    }
+
+    .game-window::after {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      pointer-events: none;
+    }
+
+    canvas {
+      display: block;
+      width: 100%;
+      height: auto;
+      max-width: 800px;
+      background-color: #242933; /* Racetrack dark asphalt */
+      margin: 0 auto;
+    }
+
+    /* Sidebar and Widgets */
+    .sidebar {
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+    }
+
+    .glass-card {
+      background: rgba(46, 52, 64, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--nord6);
+      margin-top: 0;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--nord3);
+      padding-bottom: 8px;
+    }
+
+    /* Leaderboard Styles */
+    .leaderboard-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .leader-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      background: rgba(59, 66, 82, 0.5);
+      border-radius: 8px;
+      border-left: 4px solid var(--nord3);
+      transition: all 0.2s ease;
+    }
+
+    .leader-row.active-steer {
+      box-shadow: var(--neon-glow-cyan);
+    }
+
+    .leader-info {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .leader-color {
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      box-shadow: 0 0 6px currentColor;
+    }
+
+    .leader-name {
+      font-weight: 600;
+      font-size: 0.95rem;
+    }
+
+    .leader-stats {
+      text-align: right;
+    }
+
+    .leader-laps {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: var(--nord8);
+    }
+
+    .leader-speed {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--nord4);
+    }
+
+    /* Dashboard & On-Screen Instructions */
+    .manual-overlay {
+      background: rgba(46, 52, 64, 0.85);
+      border-top: 1px solid var(--nord3);
+      padding: 15px 25px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .keyboard-guide {
+      display: flex;
+      gap: 8px;
+    }
+
+    .key-badge {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--nord1);
+      border: 1px solid var(--nord3);
+      color: var(--nord6);
+      padding: 4px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .drift-notification {
+      position: absolute;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(191, 97, 106, 0.9);
+      color: var(--nord6);
+      padding: 6px 15px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      box-shadow: var(--neon-glow-red);
+    }
+
+    /* Dynamic Button Overrides */
+    .btn-action {
+      background-color: var(--nord8);
+      color: var(--nord0);
+      font-weight: 700;
+      border-radius: 6px;
+      padding: 10px 20px;
+      font-size: 0.9rem;
+      letter-spacing: 0.5px;
+      box-shadow: 0 4px 10px rgba(136, 192, 208, 0.2);
+    }
+
+    .btn-action:hover {
+      background-color: var(--nord7);
+      box-shadow: 0 4px 15px rgba(136, 192, 208, 0.35);
+    }
+
+    .btn-stop {
+      background-color: var(--nord11);
+      color: var(--nord6);
+    }
+
+    .btn-stop:hover {
+      background-color: #cf717a;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation / Application Header -->
+  <header>
+    <div class="brand">
+      <h1>NEON GP</h1>
+      <span>v2.0 (Library)</span>
+    </div>
+    
+    <div class="control-center">
+      <button class="btn btn-action" id="startBtn">START ENGINE</button>
+      <button class="btn btn-danger btn-stop" id="stopBtn">PAUSE</button>
+      <button class="btn" id="resetBtn">RESET GRID</button>
+    </div>
+  </header>
+
+  <!-- Main Grid Workspace -->
+  <div class="app-container">
+    
+    <!-- Left Workspace: Racetrack Canvas -->
+    <div class="main-panel">
+      <div class="game-window">
+        <!-- Canvas Status HUD -->
+        <div class="game-header">
+          <div class="game-title" id="trackStatus">TRACK ACTIVE</div>
+          <div id="lobbyBadge" class="badge badge-lobby">LOBBY</div>
+        </div>
+
+        <div style="position: relative;">
+          <!-- Off-road / Drift visual notification -->
+          <div class="drift-notification" id="driftWarning">⚠️ OFF-ROAD: SPEED REDUCED!</div>
+          
+          <!-- Racetrack Renderer -->
+          <canvas id="raceCanvas" width="800" height="600"></canvas>
+        </div>
+
+        <!-- Manual Keyboard Controller Overlay -->
+        <div class="manual-overlay">
+          <div>
+            <strong style="color: var(--nord7);">Interactive Keyboard Mode:</strong> Focus track and drive naturally.
+          </div>
+          <div class="keyboard-guide">
+            <span class="key-badge">▲ Accel</span>
+            <span class="key-badge">▼ Brake</span>
+            <span class="key-badge">◀ Steer L</span>
+            <span class="key-badge">▶ Steer R</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Workspace: Leaderboard & System Stats -->
+    <div class="sidebar">
+      
+      <!-- Real-time Lap Leaderboard -->
+      <div class="glass-card">
+        <h3 class="card-title">
+          LAP LEADERBOARD
+          <span style="font-size: 0.8rem; color: var(--nord8);">LIVE</span>
+        </h3>
+        <div class="leaderboard-list" id="leaderboard">
+          <div style="text-align: center; color: var(--nord3); padding: 20px;">
+            Waiting for agents to join the grid...
+          </div>
+        </div>
+      </div>
+
+      <!-- System Integration Specs -->
+      <div class="glass-card">
+        <h3 class="card-title">INTEGRATION SPECS</h3>
+        <div style="font-family: 'Outfit', sans-serif; font-size: 0.9rem; line-height: 1.6; color: var(--nord4);">
+          <p>This viewer is dynamically served by the framework's native web server without Nginx/Docker dependencies.</p>
+          <ul style="padding-left: 20px; margin: 10px 0;">
+            <li>Framework JS loaded from <code class="key-badge" style="font-size: 0.75rem;">/aigf/framework.js</code></li>
+            <li>Framework CSS loaded from <code class="key-badge" style="font-size: 0.75rem;">/aigf/nord.css</code></li>
+            <li>Websocket linked dynamically to <code class="key-badge" style="font-size: 0.75rem;">/ws</code> on port <code class="key-badge" style="font-size: 0.75rem;">8765</code></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Dynamic Javascript Client Implementation -->
+  <script type="module">
+    import { GameClient } from "/aigf/framework.js";
+
+    const canvas = document.getElementById("raceCanvas");
+    const ctx = canvas.getContext("2d");
+    const leaderboard = document.getElementById("leaderboard");
+    const lobbyBadge = document.getElementById("lobbyBadge");
+    const driftWarning = document.getElementById("driftWarning");
+    const trackStatus = document.getElementById("trackStatus");
+
+    // Initialize the WebSocket client
+    const client = new GameClient(8765);
+
+    // Track particle systems (drift tyre tracks or smoke)
+    let particles = [];
+    let tyreTracks = [];
+
+    // Local player steering hooks to allow human control directly in browser
+    let keys = {
+      up: false,
+      down: false,
+      left: false,
+      right: false
+    };
+
+    // Keep track of keys pressed to send steer actions to websocket if we act as a manual agent
+    window.addEventListener("keydown", (e) => {
+      let changed = false;
+      if (e.key === "ArrowUp" || e.key === "w") { keys.up = true; changed = true; }
+      if (e.key === "ArrowDown" || e.key === "s") { keys.down = true; changed = true; }
+      if (e.key === "ArrowLeft" || e.key === "a") { keys.left = true; changed = true; }
+      if (e.key === "ArrowRight" || e.key === "d") { keys.right = true; changed = true; }
+
+      if (changed) {
+        e.preventDefault();
+        sendKeyboardControls();
+      }
+    });
+
+    window.addEventListener("keyup", (e) => {
+      let changed = false;
+      if (e.key === "ArrowUp" || e.key === "w") { keys.up = false; changed = true; }
+      if (e.key === "ArrowDown" || e.key === "s") { keys.down = false; changed = true; }
+      if (e.key === "ArrowLeft" || e.key === "a") { keys.left = false; changed = true; }
+      if (e.key === "ArrowRight" || e.key === "d") { keys.right = false; changed = true; }
+
+      if (changed) {
+        sendKeyboardControls();
+      }
+    });
+
+    function sendKeyboardControls() {
+      // Send keyboard steering overrides to players[0] (or all manual players)
+      // The server will catch custom key mappings as steer commands
+      let accel = keys.up ? 1.0 : (keys.down ? -0.5 : 0.0);
+      let steer = keys.left ? -1.0 : (keys.right ? 1.0 : 0.0);
+      
+      client.sendAction({
+        action: "steer_update",
+        accel: accel,
+        steer: steer
+      });
+    }
+
+    // Button controls
+    document.getElementById("startBtn").addEventListener("click", () => client.sendCommand("start"));
+    document.getElementById("stopBtn").addEventListener("click", () => client.sendCommand("stop"));
+    document.getElementById("resetBtn").addEventListener("click", () => client.sendCommand("reset"));
+
+    // Handlers
+    client.onSetup = (setupData) => {
+      console.log("Track setup received:", setupData);
+    };
+
+    client.onUpdate = (data) => {
+      // Render the current simulation state
+      const state = data;
+      
+      // Update badge game states
+      if (client.gameState === "RUNNING") {
+        lobbyBadge.textContent = "SIMULATING";
+        lobbyBadge.className = "badge badge-running";
+        trackStatus.textContent = "TRACK ACTIVE • IN PROGRESS";
+      } else {
+        lobbyBadge.textContent = "LOBBY";
+        lobbyBadge.className = "badge badge-lobby";
+        trackStatus.textContent = "TRACK LOBBY • WAITING";
+      }
+
+      // Check if any car is off-road to show alert
+      const hasOffRoad = state.players && state.players.some(p => p.off_road);
+      if (hasOffRoad) {
+        driftWarning.style.opacity = "1";
+      } else {
+        driftWarning.style.opacity = "0";
+      }
+
+      // Draw Racetrack
+      drawTrack(state.track);
+
+      // Render tyre tracks
+      drawTyreTracks();
+
+      // Render players
+      if (state.players) {
+        state.players.forEach(p => {
+          drawCar(p);
+          // Emit drift particles if moving fast or off-road
+          if (p.off_road && Math.abs(p.speed) > 20) {
+            tyreTracks.push({ x: p.x, y: p.y, color: "rgba(163, 190, 140, 0.4)", life: 60 });
+            for (let i = 0; i < 2; i++) {
+              particles.push({
+                x: p.x,
+                y: p.y,
+                vx: (Math.random() - 0.5) * 40 - Math.cos(p.angle) * p.speed * 0.1,
+                vy: (Math.random() - 0.5) * 40 - Math.sin(p.angle) * p.speed * 0.1,
+                color: "#ebcb8b", // dirt particle
+                size: Math.random() * 4 + 2,
+                life: 1.0
+              });
+            }
+          } else if (Math.abs(p.speed) > 180) {
+            // High speed tyre smoke
+            tyreTracks.push({ x: p.x, y: p.y, color: "rgba(229, 233, 240, 0.25)", life: 40 });
+          }
+        });
+      }
+
+      // Update Particles
+      updateAndDrawParticles();
+
+      // Update Sidebar Leaderboard
+      updateLeaderboard(state.players);
+    };
+
+    function drawTrack(track) {
+      // Clear Canvas with asphalt color
+      ctx.fillStyle = "#2e3440";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      if (!track) return;
+
+      const cx = track.cx;
+      const cy = track.cy;
+
+      // Draw outer grass green area boundary
+      ctx.fillStyle = "#3b4252";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      // Draw Outer Track (Oval Asphalt)
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, track.outer_rx, track.outer_ry, 0, 0, 2 * Math.PI);
+      ctx.fillStyle = "#242933";
+      ctx.fill();
+      
+      // Draw outer track boundary border (cyan neon)
+      ctx.strokeStyle = "rgba(136, 192, 208, 0.6)";
+      ctx.lineWidth = 4;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#88c0d0";
+      ctx.stroke();
+      ctx.shadowBlur = 0; // reset
+
+      // Draw Inner Track (Center Greenery Oval)
+      ctx.beginPath();
+      ctx.ellipse(cx, cy, track.inner_rx, track.inner_ry, 0, 0, 2 * Math.PI);
+      ctx.fillStyle = "#2e3440";
+      ctx.fill();
+      
+      // Draw inner track boundary border (red neon)
+      ctx.strokeStyle = "rgba(191, 97, 106, 0.6)";
+      ctx.lineWidth = 4;
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = "#bf616a";
+      ctx.stroke();
+      ctx.shadowBlur = 0; // reset
+
+      // Draw Start/Finish grid lines (vertical line at bottom center)
+      const startX = cx;
+      const startYMin = cy + track.inner_ry;
+      const startYMax = cy + track.outer_rx; // outer_ry is Y boundary
+      
+      ctx.strokeStyle = "rgba(235, 203, 139, 0.8)";
+      ctx.lineWidth = 5;
+      ctx.setLineDash([8, 8]);
+      ctx.beginPath();
+      ctx.moveTo(cx, cy + track.inner_ry + 2);
+      ctx.lineTo(cx, cy + track.outer_ry - 2);
+      ctx.stroke();
+      ctx.setLineDash([]); // reset dashboard
+    }
+
+    function drawTyreTracks() {
+      ctx.lineWidth = 3;
+      tyreTracks.forEach((t, index) => {
+        ctx.strokeStyle = t.color;
+        ctx.beginPath();
+        ctx.arc(t.x, t.y, 2, 0, 2*Math.PI);
+        ctx.stroke();
+        t.life--;
+        if (t.life <= 0) tyreTracks.splice(index, 1);
+      });
+    }
+
+    function drawCar(car) {
+      ctx.save();
+      ctx.translate(car.x, car.y);
+      ctx.rotate(car.angle);
+
+      // Set neon shadow for the cars
+      ctx.shadowBlur = 12;
+      ctx.shadowColor = car.color;
+
+      // Draw car body (sleek formula racer style)
+      ctx.fillStyle = car.color;
+      ctx.beginPath();
+      ctx.moveTo(18, 0); // Nose cone
+      ctx.lineTo(-12, -9); // Back left tyre wing
+      ctx.lineTo(-6, -4);
+      ctx.lineTo(-6, 4);
+      ctx.lineTo(-12, 9); // Back right tyre wing
+      ctx.closePath();
+      ctx.fill();
+
+      // Draw cabin cockpit (glassmorphism/black dome)
+      ctx.shadowBlur = 0; // turn off shadow
+      ctx.fillStyle = "#1a1e25";
+      ctx.beginPath();
+      ctx.ellipse(2, 0, 5, 3.5, 0, 0, 2*Math.PI);
+      ctx.fill();
+
+      // Rear wing/spoiler
+      ctx.fillStyle = "#d8dee9";
+      ctx.fillRect(-10, -8, 2, 16);
+
+      ctx.restore();
+    }
+
+    function updateAndDrawParticles() {
+      particles.forEach((p, idx) => {
+        p.x += p.vx * 0.03;
+        p.y += p.vy * 0.03;
+        p.life -= 0.02;
+
+        ctx.fillStyle = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size * p.life, 0, 2 * Math.PI);
+        ctx.fill();
+
+        if (p.life <= 0) {
+          particles.splice(idx, 1);
+        }
+      });
+    }
+
+    function updateLeaderboard(playersList) {
+      if (!playersList || playersList.length === 0) {
+        leaderboard.innerHTML = `<div style="text-align: center; color: var(--nord3); padding: 20px;">Grid is empty. Run agents!</div>`;
+        return;
+      }
+
+      // Sort by laps (descending), then speed (descending)
+      const sorted = [...playersList].sort((a, b) => {
+        if (b.laps !== a.laps) return b.laps - a.laps;
+        return Math.abs(b.speed) - Math.abs(a.speed);
+      });
+
+      leaderboard.innerHTML = sorted.map((p, idx) => {
+        const isOffroad = p.off_road ? "⚠️ OFF-ROAD" : "";
+        const speedKmh = Math.round(Math.abs(p.speed) * 0.6); // scale factor for km/h representation
+        
+        return `
+          <div class="leader-row ${p.off_road ? 'active-steer' : ''}" style="border-left-color: ${p.color};">
+            <div class="leader-info">
+              <span style="font-weight: 800; font-family: monospace; font-size: 1.1rem; color: var(--nord4);">${idx + 1}</span>
+              <div class="leader-color" style="color: ${p.color}; background-color: ${p.color};"></div>
+              <div>
+                <div class="leader-name">${p.name}</div>
+                <div class="leader-speed">${speedKmh} km/h <span style="color: var(--nord11); font-weight:700;">${isOffroad}</span></div>
+              </div>
+            </div>
+            <div class="leader-stats">
+              <div class="leader-laps">${p.laps} <span style="font-size:0.75rem; color:var(--text-muted);">LAPS</span></div>
+            </div>
+          </div>
+        `;
+      }).join("");
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+/*
+ * Nord Color Palette & Game Theme
+ *
+ * Nord is an arctic, north-bluish color palette that focuses on clean,
+ * uncluttered designs with high contrast and readability.
+ * Learn more: https://www.nordtheme.com/
+ */
+
+:root {
+  /* --- Polar Night (Dark, Cold Tones) --- */
+  --nord0: #2e3440; /* Base background */
+  --nord1: #3b4252; /* Elevated surface / Card background */
+  --nord2: #434c5e; /* Selection / Hover state */
+  --nord3: #4c566a; /* Muted text / Borders */
+
+  /* --- Snow Storm (Light, Clean Tones) --- */
+  --nord4: #d8dee9; /* Main text (bright) */
+  --nord5: #e5e9f0; /* Secondary text */
+  --nord6: #eceff4; /* Vibrant active text */
+
+  /* --- Frost (Cool, Ice-Blue Accents) --- */
+  --nord7: #8fbcbb; /* Teal / Highlight / Interactive */
+  --nord8: #88c0d0; /* Light Blue / Primary Accent / Interactive */
+  --nord9: #81a1c1; /* Medium Blue / Info / Secondary Accent */
+  --nord10: #5e81ac; /* Dark Blue / Active / Links */
+
+  /* --- Aurora (Warm, Vibrant Accents) --- */
+  --nord11: #bf616a; /* Red / Danger / Stop / Error */
+  --nord12: #d08770; /* Orange / Warning */
+  --nord13: #ebcb8b; /* Yellow / Alert / Attention */
+  --nord14: #a3be8c; /* Green / Success / Start / Run */
+  --nord15: #b48ead; /* Purple / Specialty / Custom */
+
+  /* --- Semantic Mappings for Games --- */
+  --bg-app: var(--nord0);
+  --bg-surface: var(--nord1);
+  --bg-hover: var(--nord2);
+  --border-color: var(--nord3);
+  
+  --text-primary: var(--nord6);
+  --text-secondary: var(--nord4);
+  --text-muted: var(--nord3);
+
+  --accent-primary: var(--nord8);
+  --accent-secondary: var(--nord9);
+  
+  --color-success: var(--nord14);
+  --color-danger: var(--nord11);
+  --color-warning: var(--nord12);
+  --color-info: var(--nord8);
+  
+  /* --- Game UI Settings --- */
+  --font-family: 'Outfit', 'Inter', system-ui, -apple-system, sans-serif;
+  --border-radius: 8px;
+  --transition-speed: 0.2s;
+  --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+  --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+/* Base Styles */
+body {
+  background-color: var(--bg-app);
+  color: var(--text-primary);
+  font-family: var(--font-family);
+  margin: 0;
+  padding: 20px;
+}
+
+/* Utility Classes for Nord Colors */
+.text-nord0 { color: var(--nord0); }
+.text-nord1 { color: var(--nord1); }
+.text-nord2 { color: var(--nord2); }
+.text-nord3 { color: var(--nord3); }
+.text-nord4 { color: var(--nord4); }
+.text-nord5 { color: var(--nord5); }
+.text-nord6 { color: var(--nord6); }
+.text-nord7 { color: var(--nord7); }
+.text-nord8 { color: var(--nord8); }
+.text-nord9 { color: var(--nord9); }
+.text-nord10 { color: var(--nord10); }
+.text-nord11 { color: var(--nord11); }
+.text-nord12 { color: var(--nord12); }
+.text-nord13 { color: var(--nord13); }
+.text-nord14 { color: var(--nord14); }
+.text-nord15 { color: var(--nord15); }
+
+.bg-nord0 { background-color: var(--nord0); }
+.bg-nord1 { background-color: var(--nord1); }
+.bg-nord2 { background-color: var(--nord2); }
+.bg-nord3 { background-color: var(--nord3); }
+.bg-nord4 { background-color: var(--nord4); }
+.bg-nord5 { background-color: var(--nord5); }
+.bg-nord6 { background-color: var(--nord6); }
+.bg-nord7 { background-color: var(--nord7); }
+.bg-nord8 { background-color: var(--nord8); }
+.bg-nord9 { background-color: var(--nord9); }
+.bg-nord10 { background-color: var(--nord10); }
+.bg-nord11 { background-color: var(--nord11); }
+.bg-nord12 { background-color: var(--nord12); }
+.bg-nord13 { background-color: var(--nord13); }
+.bg-nord14 { background-color: var(--nord14); }
+.bg-nord15 { background-color: var(--nord15); }
+
+/* Semantic UI Components */
+
+/* Game Canvas Container */
+.game-viewport {
+  background-color: var(--nord1);
+  border: 2px solid var(--nord3);
+  border-radius: var(--border-radius);
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  position: relative;
+  transition: border-color var(--transition-speed);
+}
+
+.game-viewport:focus-within {
+  border-color: var(--accent-primary);
+}
+
+/* Game Status Header */
+.game-header {
+  background-color: var(--nord2);
+  border-bottom: 1px solid var(--nord3);
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.game-title {
+  color: var(--nord6);
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Status Badges */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.badge-lobby {
+  background-color: var(--nord10);
+  color: var(--nord6);
+}
+
+.badge-running {
+  background-color: var(--nord14);
+  color: var(--nord0);
+}
+
+/* Control Buttons */
+.btn {
+  background-color: var(--nord3);
+  color: var(--text-primary);
+  border: none;
+  border-radius: var(--border-radius);
+  padding: 8px 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color var(--transition-speed), transform 0.1s;
+}
+
+.btn:hover {
+  background-color: var(--nord2);
+}
+
+.btn:active {
+  transform: scale(0.98);
+}
+
+.btn-primary {
+  background-color: var(--nord8);
+  color: var(--nord0);
+}
+
+.btn-primary:hover {
+  background-color: var(--nord7);
+}
+
+.btn-danger {
+  background-color: var(--nord11);
+  color: var(--nord6);
+}
+
+.btn-danger:hover {
+  background-color: #d06f78;
+}
+
+/* Stats Dashboard / Agent List */
+.stats-panel {
+  background-color: var(--nord1);
+  border: 1px solid var(--border-color);
+  border-radius: var(--border-radius);
+  padding: 15px;
+  margin-top: 15px;
+}
+
+.agent-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--nord3);
+}
+
+.agent-row:last-child {
+  border-bottom: none;
+}
+
+.agent-id {
+  font-weight: 600;
+  color: var(--nord8);
+}
+
+.agent-status {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+}
+
+.agent-status-active {
+  background-color: var(--nord14);
+  box-shadow: 0 0 8px var(--nord14);
+}

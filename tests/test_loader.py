@@ -1,27 +1,89 @@
+import asyncio
+import contextlib
+import http.client
+import json
 import os
+
 import pytest
-from fastapi.testclient import TestClient
-from starlette.websockets import WebSocketDisconnect
-from framework.main import app
+import pytest_asyncio
+import websockets
 
-@pytest.fixture
-def client():
-    # Set env var for testing
+from aigf.main import serve_game, stop_game
+
+
+@pytest_asyncio.fixture(autouse=True)
+async def test_server():
     os.environ["GAME_CLASS"] = "tests.test_interface.MockGame"
-    with TestClient(app) as c:
-        yield c
+    # Run serve_game in a background task
+    server_task = asyncio.create_task(serve_game("127.0.0.1", 8766))
+    # Give the server a small moment to start up
+    await asyncio.sleep(0.2)
+    yield "ws://127.0.0.1:8766/ws"
+    await stop_game()
+    with contextlib.suppress(Exception):
+        await server_task
 
-def test_root_endpoint(client):
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.json()["status"] == "running"
-    # Note: Game loading might happen on startup event which TestClient handles with 'with'
-    assert response.json()["game_loaded"] is True
+@pytest.mark.asyncio
+async def test_root_endpoint():
+    loop = asyncio.get_running_loop()
+    def get_url():
+        conn = http.client.HTTPConnection("127.0.0.1", 8766)
+        conn.request("GET", "/")
+        response = conn.getresponse()
+        body = response.read()
+        status = response.status
+        conn.close()
+        return body, status
 
-def test_websocket_invalid_client(client):
-    try:
-        with client.websocket_connect("/ws") as websocket:
-            websocket.send_json({"client": "invalid"})
-            websocket.receive_json() # This should trigger closure detection
-    except WebSocketDisconnect:
-        pass
+    body, status = await loop.run_in_executor(None, get_url)
+    assert status == 200
+    data = json.loads(body.decode("utf-8"))
+    assert data["status"] == "running"
+    assert data["game_loaded"] is True
+
+@pytest.mark.asyncio
+async def test_static_file_serving():
+    loop = asyncio.get_running_loop()
+    def get_file():
+        conn = http.client.HTTPConnection("127.0.0.1", 8766)
+        conn.request("GET", "/framework/nord.css")
+        response = conn.getresponse()
+        body = response.read()
+        status = response.status
+        content_type = response.getheader("Content-Type")
+        conn.close()
+        return body, status, content_type
+
+    body, status, mime = await loop.run_in_executor(None, get_file)
+    assert status == 200
+    assert b"Nord Color Palette" in body
+    assert mime is not None and "text/css" in mime
+
+@pytest.mark.asyncio
+async def test_api_maps():
+    loop = asyncio.get_running_loop()
+    def get_maps():
+        conn = http.client.HTTPConnection("127.0.0.1", 8766)
+        conn.request("GET", "/api/maps")
+        response = conn.getresponse()
+        body = response.read()
+        status = response.status
+        conn.close()
+        return body, status
+
+    body, status = await loop.run_in_executor(None, get_maps)
+    assert status == 200
+    data = json.loads(body.decode("utf-8"))
+    assert "maps" in data
+    assert isinstance(data["maps"], list)
+
+@pytest.mark.asyncio
+async def test_websocket_invalid_client(test_server):
+    uri = test_server
+    async with websockets.connect(uri) as websocket:
+        await websocket.send(json.dumps({"client": "invalid"}))
+        try:
+            await websocket.recv()
+            raise AssertionError("Should have disconnected for invalid client type")
+        except websockets.exceptions.ConnectionClosed as e:
+            assert e.code == 1008

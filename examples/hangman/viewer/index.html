@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hangman — AI Word Discovery</title>
+  
+  <!-- Premium Typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+  
+  <!-- Nord UI Theme -->
+  <link rel="stylesheet" href="/aigf/nord.css">
+
+  <style>
+    body {
+      background-color: #1a1e25;
+      color: var(--text-primary);
+      font-family: var(--font-family);
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: linear-gradient(135deg, #2e3440 0%, #242933 100%);
+      border-bottom: 1px solid var(--nord3);
+      padding: 15px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: var(--shadow-md);
+    }
+
+    .brand h1 {
+      margin: 0;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+      background: linear-gradient(90deg, var(--nord8) 0%, var(--nord7) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .app-container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 30px;
+      flex-grow: 1;
+    }
+
+    @media (max-width: 1000px) {
+      .app-container {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .game-window {
+      background-color: var(--bg-surface);
+      border: 2px solid var(--border-color);
+      border-radius: 12px;
+      box-shadow: var(--shadow-lg);
+      padding: 25px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 25px;
+      position: relative;
+    }
+
+    canvas {
+      display: block;
+      background-color: #242933;
+      border-radius: 8px;
+      border: 1px solid var(--nord3);
+      box-shadow: var(--shadow-sm);
+    }
+
+    /* Spaced hidden characters */
+    .word-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 2.2rem;
+      font-weight: 700;
+      letter-spacing: 12px;
+      color: var(--nord6);
+      text-shadow: 0 0 8px rgba(236, 239, 244, 0.25);
+      margin-top: 15px;
+      text-transform: uppercase;
+      text-align: center;
+    }
+
+    /* On-Screen Keyboard */
+    .keyboard-grid {
+      display: grid;
+      grid-template-columns: repeat(9, 1fr);
+      gap: 8px;
+      width: 100%;
+      max-width: 550px;
+      margin-top: 15px;
+    }
+
+    .key-btn {
+      font-family: 'Outfit', sans-serif;
+      font-weight: 700;
+      font-size: 1.1rem;
+      padding: 10px 0;
+      border-radius: 6px;
+      border: 1px solid var(--nord3);
+      background-color: var(--nord1);
+      color: var(--nord6);
+      cursor: pointer;
+      transition: all 0.15s ease;
+      text-transform: uppercase;
+    }
+
+    .key-btn:hover {
+      background-color: var(--nord2);
+      border-color: var(--nord8);
+    }
+
+    .key-btn.correct {
+      background-color: var(--nord14) !important;
+      color: var(--nord0) !important;
+      border-color: var(--nord14) !important;
+      box-shadow: 0 0 10px rgba(163, 190, 140, 0.4);
+      cursor: not-allowed;
+    }
+
+    .key-btn.incorrect {
+      background-color: var(--nord11) !important;
+      color: var(--nord6) !important;
+      border-color: var(--nord11) !important;
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    /* Glassmorphism Overlays */
+    .glass-card {
+      background: rgba(46, 52, 64, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: var(--shadow-md);
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--nord6);
+      margin-top: 0;
+      margin-bottom: 15px;
+      border-bottom: 1px solid var(--nord3);
+      padding-bottom: 8px;
+    }
+
+    .badge-status {
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-align: center;
+      padding: 8px;
+      border-radius: 8px;
+      text-transform: uppercase;
+      box-shadow: var(--shadow-md);
+      margin-bottom: 15px;
+    }
+
+    .status-won {
+      background-color: var(--nord14);
+      color: var(--nord0);
+      text-shadow: 0 0 8px rgba(163, 190, 140, 0.5);
+    }
+
+    .status-lost {
+      background-color: var(--nord11);
+      color: var(--nord6);
+      text-shadow: 0 0 8px rgba(191, 97, 106, 0.5);
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="brand">
+      <h1>HANGMAN</h1>
+    </div>
+    <div class="badge badge-lobby" id="headerState">TURN-BASED</div>
+  </header>
+
+  <div class="app-container">
+    
+    <!-- Renders the Gallows and Word display -->
+    <div class="game-window">
+      <div class="word-display" id="wordDisplay">_ _ _ _ _ _</div>
+
+      <canvas id="hangmanCanvas" width="300" height="280"></canvas>
+
+      <!-- On screen clickable keyboard -->
+      <div class="keyboard-grid" id="keyboard">
+        <!-- Generated Dynamically -->
+      </div>
+    </div>
+
+    <!-- Right Side Dashboard -->
+    <div class="sidebar" style="display:flex; flex-direction:column; gap:25px;">
+      
+      <!-- Live Game Result HUD -->
+      <div class="glass-card" id="statusCard" style="display:none;">
+        <h3 class="card-title">GAME RESULTS</h3>
+        <div class="badge-status" id="statusBadge">WON</div>
+        <div style="font-size:0.95rem; text-align:center; color:var(--nord4); margin-bottom:15px;" id="answerReveal">
+          The word was: <strong>decorator</strong>
+        </div>
+        <button class="btn btn-primary" style="width:100%; font-size:1.1rem; padding:12px 0;" id="restartBtn">PLAY AGAIN</button>
+      </div>
+
+      <!-- Lives count -->
+      <div class="glass-card">
+        <h3 class="card-title">GUESS ATTEMPTS</h3>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <div style="font-size:0.9rem; color:var(--text-secondary);">REMAINING LIVES</div>
+          <div style="font-family:'JetBrains Mono'; font-size:2rem; font-weight:800; color:var(--nord11);" id="livesText">6</div>
+        </div>
+      </div>
+
+      <div class="glass-card">
+        <h3 class="card-title">INTEGRATION SPECS</h3>
+        <div style="font-size:0.9rem; line-height:1.6; color:var(--nord4);">
+          <p>This replica demonstrates a discrete, turn-based game loop without frame updates.</p>
+          <ul style="padding-left: 20px; margin: 10px 0;">
+            <li>No ticks are broadcasted; states sync solely on player actions.</li>
+            <li>Package: <code class="key-badge" style="font-size:0.75rem;">aigf</code></li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script type="module">
+    import { GameClient } from "/aigf/framework.js";
+
+    const canvas = document.getElementById("hangmanCanvas");
+    const ctx = canvas.getContext("2d");
+    const wordDisplayEl = document.getElementById("wordDisplay");
+    const keyboardEl = document.getElementById("keyboard");
+    const statusCard = document.getElementById("statusCard");
+    const statusBadge = document.getElementById("statusBadge");
+    const answerReveal = document.getElementById("answerReveal");
+    const restartBtn = document.getElementById("restartBtn");
+    const livesText = document.getElementById("livesText");
+    const headerState = document.getElementById("headerState");
+
+    // Connect WebSocket
+    const client = new GameClient(8765);
+
+    // Initial keyboard builder
+    buildKeyboard();
+
+    // Physical key listener
+    window.addEventListener("keydown", (e) => {
+      const letter = e.key.toLowerCase();
+      if (letter.length === 1 && letter >= 'a' && letter <= 'z') {
+        client.sendAction({ action: letter });
+      }
+    });
+
+    restartBtn.addEventListener("click", () => {
+      client.sendAction({ action: "reset" });
+    });
+
+    client.onUpdate = (state) => {
+      // 1. Update masked word
+      wordDisplayEl.textContent = state.masked_word.split("").join(" ");
+
+      // 2. Lives update
+      livesText.textContent = state.remaining_lives;
+      if (state.remaining_lives <= 2) {
+        livesText.style.color = "var(--nord11)";
+      } else if (state.remaining_lives <= 4) {
+        livesText.style.color = "var(--nord12)";
+      } else {
+        livesText.style.color = "var(--nord14)";
+      }
+
+      // 3. Status card update
+      if (state.status === "WON") {
+        statusCard.style.display = "block";
+        statusBadge.textContent = "VICTORY!";
+        statusBadge.className = "badge-status status-won";
+        answerReveal.innerHTML = `Congratulations! You solved it!`;
+        headerState.textContent = "WON";
+        headerState.className = "badge badge-running";
+      } else if (state.status === "LOST") {
+        statusCard.style.display = "block";
+        statusBadge.textContent = "DEFEAT!";
+        statusBadge.className = "badge-status status-lost";
+        answerReveal.innerHTML = `Secret word was: <strong style="color:var(--nord8); text-transform:uppercase;">${state.secret_word}</strong>`;
+        headerState.textContent = "GAME OVER";
+        headerState.className = "badge badge-danger";
+      } else {
+        statusCard.style.display = "none";
+        headerState.textContent = "RUNNING";
+        headerState.className = "badge badge-running";
+      }
+
+      // 4. Keyboard highlight update
+      updateKeyboardKeys(state.guessed_letters, state.secret_word || "");
+
+      // 5. Gallows vector canvas rendering
+      drawGallows(state.remaining_lives);
+    };
+
+    function buildKeyboard() {
+      keyboardEl.innerHTML = "";
+      const alphabet = "abcdefghijklmnopqrstuvwxyz";
+      for (let char of alphabet) {
+        const btn = document.createElement("button");
+        btn.textContent = char;
+        btn.className = "key-btn";
+        btn.id = `key-${char}`;
+        btn.addEventListener("click", () => {
+          client.sendAction({ action: char });
+        });
+        keyboardEl.appendChild(btn);
+      }
+    }
+
+    function updateKeyboardKeys(guessedList, secretWord) {
+      if (!guessedList) return;
+      const alphabet = "abcdefghijklmnopqrstuvwxyz";
+      for (let char of alphabet) {
+        const btn = document.getElementById(`key-${char}`);
+        if (!btn) continue;
+
+        if (guessedList.includes(char)) {
+          // If letter was correct, green, else red
+          // We can check if secretWord contains it, or if game is running we check local guess outcome
+          // If secretWord is revealed we know, otherwise if we got a life decrease it was wrong
+          // Server state might not tell us directly but if guess in secretWord or (if secretWord is empty we check if letter was in word)
+          // We will check if it was guessed
+          btn.disabled = true;
+          // Simple client check (approximate green/red)
+          const wordElText = wordDisplayEl.textContent.replace(/\s/g, "").toLowerCase();
+          if (wordElText.includes(char) || (secretWord && secretWord.includes(char))) {
+            btn.className = "key-btn correct";
+          } else {
+            btn.className = "key-btn incorrect";
+          }
+        } else {
+          btn.disabled = false;
+          btn.className = "key-btn";
+        }
+      }
+    }
+
+    function drawGallows(lives) {
+      // Clear
+      ctx.fillStyle = "#242933";
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+      ctx.strokeStyle = "#4c566a"; // Muted wood border
+      ctx.lineWidth = 6;
+      ctx.lineCap = "round";
+
+      // Draw Gallows pole
+      ctx.beginPath();
+      // Base
+      ctx.moveTo(30, 250); ctx.lineTo(130, 250);
+      // Vertical
+      ctx.moveTo(70, 250); ctx.lineTo(70, 30);
+      // Crossbeam
+      ctx.moveTo(70, 30); ctx.lineTo(190, 30);
+      // Angle support
+      ctx.moveTo(70, 70); ctx.lineTo(110, 30);
+      // Rope
+      ctx.moveTo(190, 30); ctx.lineTo(190, 60);
+      ctx.stroke();
+
+      // Draw Rope loop (Nord Orange)
+      ctx.strokeStyle = "rgba(208, 135, 112, 0.8)";
+      ctx.lineWidth = 3;
+      ctx.beginPath();
+      ctx.arc(190, 68, 8, 0, 2*Math.PI);
+      ctx.stroke();
+
+      // Dynamic bodies based on remaining lives
+      ctx.strokeStyle = "#88c0d0"; // Frost neon body
+      ctx.shadowBlur = 8;
+      ctx.shadowColor = "#88c0d0";
+      ctx.lineWidth = 4;
+
+      // Head (lives <= 5)
+      if (lives <= 5) {
+        ctx.beginPath();
+        ctx.arc(190, 90, 16, 0, 2*Math.PI);
+        ctx.stroke();
+      }
+
+      // Spine/Body (lives <= 4)
+      if (lives <= 4) {
+        ctx.beginPath();
+        ctx.moveTo(190, 106);
+        ctx.lineTo(190, 170);
+        ctx.stroke();
+      }
+
+      // Left arm (lives <= 3)
+      if (lives <= 3) {
+        ctx.beginPath();
+        ctx.moveTo(190, 120);
+        ctx.lineTo(160, 145);
+        ctx.stroke();
+      }
+
+      // Right arm (lives <= 2)
+      if (lives <= 2) {
+        ctx.beginPath();
+        ctx.moveTo(190, 120);
+        ctx.lineTo(220, 145);
+        ctx.stroke();
+      }
+
+      // Left leg (lives <= 1)
+      if (lives <= 1) {
+        ctx.beginPath();
+        ctx.moveTo(190, 170);
+        ctx.lineTo(165, 220);
+        ctx.stroke();
+      }
+
+      // Right leg (lives <= 0) - full hangman
+      if (lives <= 0) {
+        ctx.strokeStyle = "#bf616a"; // Red body on defeat
+        ctx.shadowColor = "#bf616a";
+        ctx.beginPath();
+        ctx.moveTo(190, 170);
+        ctx.lineTo(215, 220);
+        ctx.stroke();
+      }
+
+      // reset shadows
+      ctx.shadowBlur = 0;
+    }
+  </script>
+</body>
+</html>
