@@ -1,3 +1,8 @@
+__author__ = "Mário Antunes"
+__version__ = "1.1.0"
+__email__ = "mario.antunes@ua.pt"
+__status__ = "Development"
+
 from .interface import AIGameServer as AIGameServer
 from .interface import GameInterface as GameInterface
 from .interface import GameState as GameState

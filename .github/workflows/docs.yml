@@ -29,10 +29,7 @@ jobs:
 
       - name: Build documentation
         run: |
-          PYTHONPATH=src pdoc --math -d google -o docs_out aigf \
-            --logo "assets/logo.svg" \
-            --favicon "assets/logo.svg"
-          cp -r assets docs_out/assets
+          make docs
           touch docs_out/.nojekyll
 
       - name: Deploy to GitHub Pages

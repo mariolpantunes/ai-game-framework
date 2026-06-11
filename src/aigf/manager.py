@@ -1,3 +1,8 @@
+__author__ = "Mário Antunes"
+__version__ = "1.1.0"
+__email__ = "mario.antunes@ua.pt"
+__status__ = "Development"
+
 import logging
 from typing import Any
 
@@ -50,7 +55,6 @@ class ConnectionManager:
         """
         self.frontend_ws = websocket
         logging.info("Frontend connected.")
-        await self.broadcast_frontend()
 
     async def disconnect_frontend(self) -> None:
         """
@@ -117,13 +121,25 @@ class ConnectionManager:
         """
         if player_id in self.agent_wss:
             try:
-                await self.agent_wss[player_id].send(serialize({"type": "state", **state}))
+                await self.agent_wss[player_id].send(serialize({"type": "update", **state}))
             except Exception as e:
                 logging.error(f"Error sending state to Agent {player_id}: {e}")
 
+    async def broadcast_agents(self) -> None:
+        """
+        Broadcasts the current game state to all connected agents.
+        """
+        state = self.game.get_state()
+        for player_id, agent_ws in list(self.agent_wss.items()):
+            try:
+                await agent_ws.send(serialize({"type": "update", **state}))
+            except Exception as e:
+                logging.error(f"Error broadcasting state to Agent {player_id}: {e}")
+
     async def broadcast_all(self) -> None:
         """
-        Convenience method to update the frontend.
-        Agent updates are typically managed individually by the game logic.
+        Convenience method to broadcast the current game state to all
+        connected clients (frontend and agents).
         """
         await self.broadcast_frontend()
+        await self.broadcast_agents()

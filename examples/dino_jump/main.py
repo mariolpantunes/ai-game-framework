@@ -1,3 +1,8 @@
+__author__ = "Mário Antunes"
+__version__ = "1.1.0"
+__email__ = "mario.antunes@ua.pt"
+__status__ = "Development"
+
 import logging
 import random
 from typing import Any
@@ -48,6 +53,20 @@ async def handle_disconnect(player_id: int):
         del players[player_id]
     if not players:
         app.state = GameState.LOBBY
+
+@app.on_reset
+async def handle_reset():
+    global spawn_timer, obstacles
+    obstacles.clear()
+    spawn_timer = 0.0
+    for p in players.values():
+        p["alive"] = True
+        p["score"] = 0
+        p["x"] = 100.0
+        p["y"] = GROUND_Y - DINO_HEIGHT
+        p["vy"] = 0.0
+        p["is_jumping"] = False
+    logging.info("Dino Jump simulation reset.")
 
 @app.on_action
 async def handle_action(player_id: int, action: dict[str, Any]):

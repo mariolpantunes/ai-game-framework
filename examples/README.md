@@ -55,6 +55,13 @@ Focus the terminal window and use:
 * SPACEBAR or Arrow Up (or W) to jump.
 * Q to exit the agent session.
 
+### Control the Game via Autonomous Agent
+To watch the AI play the game autonomously:
+
+```bash
+python3 examples/dino_jump/autonomous_agent.py
+```
+
 ---
 
 ## 2. Hangman (Turn-Based/Discrete Game)
@@ -92,3 +99,10 @@ python3 examples/hangman/manual_agent.py
 Follow the prompts on your terminal screen:
 * Type a letter (A-Z) and press ENTER to guess.
 * Type Q and press ENTER to quit.
+
+### Play via Autonomous Agent
+Alternatively, you can watch the autonomous agent play the game:
+
+```bash
+python3 examples/hangman/autonomous_agent.py
+```

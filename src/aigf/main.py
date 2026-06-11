@@ -1,3 +1,8 @@
+__author__ = "Mário Antunes"
+__version__ = "1.1.0"
+__email__ = "mario.antunes@ua.pt"
+__status__ = "Development"
+
 import asyncio
 import importlib
 import logging
@@ -48,6 +53,7 @@ game_instance: GameInterface | None = None
 manager: ConnectionManager | None = None
 server: Any | None = None
 stop_event: asyncio.Event | None = None
+stop_events: list[asyncio.Event] = []
 
 # --- Lightweight Web Server Scaffolding ---
 
@@ -116,10 +122,13 @@ def find_static_file(path: str) -> str | None:
     for sdir in search_dirs:
         if not os.path.exists(sdir):
             continue
+        prefix = os.path.abspath(sdir)
+        if not prefix.endswith(os.sep):
+            prefix += os.sep
         for p in paths_to_try:
             candidate = os.path.abspath(os.path.join(sdir, p))
             # Directory traversal protection:
-            if candidate.startswith(os.path.abspath(sdir)) and os.path.exists(candidate) and os.path.isfile(candidate):
+            if candidate.startswith(prefix) and os.path.exists(candidate) and os.path.isfile(candidate):
                 return candidate
     return None
 
@@ -147,21 +156,18 @@ def load_game() -> None:
         logging.error(f"Failed to load game class {game_class_path}: {e}")
 
 
-async def game_loop() -> None:
+async def game_loop(game_instance: GameInterface, manager: ConnectionManager) -> None:
     """
     Main loop for real-time games. Runs at the FPS specified in the game instance.
     """
-    if not game_instance:
-        return
-
     logging.info("Starting real-time game loop.")
     dt = 1.0 / game_instance.fps
     while True:
         start_time = time.perf_counter()
         if game_instance.state == GameState.RUNNING:
             await game_instance.tick(dt)
-            if manager:
-                await manager.broadcast_frontend()
+            await manager.broadcast_frontend()
+            await manager.broadcast_agents()
 
         # Calculate sleep to maintain FPS
         elapsed = time.perf_counter() - start_time
@@ -173,7 +179,7 @@ async def game_loop() -> None:
             break
 
 
-async def process_request(connection: Any, request: Any) -> Response | None:
+async def process_request(connection: Any, request: Any, game_instance: GameInterface | None = None) -> Response | None:
     """
     Intercepts HTTP requests.
     Supports a REST API to query maps, health checks, and a full-fledged static file server
@@ -218,8 +224,10 @@ async def process_request(connection: Any, request: Any) -> Response | None:
         filepath = find_static_file(path)
         if filepath:
             try:
-                with open(filepath, "rb") as f:
-                    body_bytes = f.read()
+                def read_file() -> bytes:
+                    with open(filepath, "rb") as f:
+                        return f.read()
+                body_bytes = await asyncio.to_thread(read_file)
                 mime = get_mime_type(filepath)
                 return Response(
                     status_code=200,
@@ -276,11 +284,20 @@ async def process_request(connection: Any, request: Any) -> Response | None:
     return None
 
 
-async def handler(websocket: Any) -> None:
+async def handler(
+    websocket: Any,
+    game_instance: GameInterface | None = None,
+    manager: ConnectionManager | None = None
+) -> None:
     """
     WebSocket handler for both frontend and agent clients.
     Handles standard simulation start/stop/reset actions natively.
     """
+    if game_instance is None:
+        game_instance = globals().get("game_instance")
+    if manager is None:
+        manager = globals().get("manager")
+
     if manager is None or game_instance is None:
         await websocket.close(code=1011, reason="Game not initialized")
         return
@@ -301,6 +318,7 @@ async def handler(websocket: Any) -> None:
             try:
                 # Send the maps and metadata immediately
                 await manager.broadcast_frontend()
+                await manager.broadcast_agents()
 
                 async for msg in websocket:
                     action = deserialize(msg)
@@ -324,6 +342,7 @@ async def handler(websocket: Any) -> None:
                         if map_data:
                             game_instance.current_map_name = filename
                             game_instance.load_map_data(map_data)
+                            await game_instance.on_reset_sim()
                             # Broadcast reset command to all connected agents
                             for agent_ws in list(manager.agent_wss.values()):
                                 with contextlib.suppress(Exception):
@@ -342,6 +361,7 @@ async def handler(websocket: Any) -> None:
                     # Pass message to game implementation for any custom commands
                     await game_instance.process_action(0, action)
                     await manager.broadcast_frontend()
+                    await manager.broadcast_agents()
             except websockets.exceptions.ConnectionClosed:
                 pass
             finally:
@@ -349,18 +369,19 @@ async def handler(websocket: Any) -> None:
 
         elif client_type == "agent":
             player_id = await manager.connect_agent(websocket)
-            await game_instance.on_handshake(player_id, data)
-
-            # Send initial setup
-            setup_data = {
-                "type": "setup",
-                "player_id": player_id,
-                **game_instance.get_setup_payload()
-            }
-            await websocket.send(serialize(setup_data))
-            await manager.broadcast_frontend()
-
             try:
+                await game_instance.on_handshake(player_id, data)
+
+                # Send initial setup
+                setup_data = {
+                    "type": "setup",
+                    "player_id": player_id,
+                    **game_instance.get_setup_payload()
+                }
+                await websocket.send(serialize(setup_data))
+                await manager.broadcast_frontend()
+                await manager.broadcast_agents()
+
                 async for msg in websocket:
                     action = deserialize(msg)
                     if game_instance.state == GameState.RUNNING:
@@ -368,11 +389,13 @@ async def handler(websocket: Any) -> None:
                         # For discrete games, we might want to broadcast after every action
                         if not game_instance.is_real_time:
                             await manager.broadcast_frontend()
+                            await manager.broadcast_agents()
             except websockets.exceptions.ConnectionClosed:
                 pass
             finally:
                 await manager.disconnect_agent(player_id)
                 await manager.broadcast_frontend()
+                await manager.broadcast_agents()
         else:
             await websocket.close(code=1008, reason="Unknown client type")
 
@@ -389,16 +412,27 @@ async def serve_game_instance(instance: GameInterface, host: str, port: int) -> 
     global game_instance, manager, server, stop_event
     game_instance = instance
     manager = ConnectionManager(game_instance)
-    stop_event = asyncio.Event()
+
+    local_stop_event = asyncio.Event()
+    stop_event = local_stop_event
+    stop_events.append(local_stop_event)
+
+    from functools import partial
+    local_handler = partial(handler, game_instance=game_instance, manager=manager)
+    local_process_request = partial(process_request, game_instance=game_instance)
 
     loop_task = None
     if game_instance.is_real_time:
-        loop_task = asyncio.create_task(game_loop())
+        loop_task = asyncio.create_task(game_loop(game_instance, manager))
 
-    logging.info(f"Starting WebSocket server on ws://{host}:{port}/ws")
-    async with websockets.serve(handler, host, port, process_request=process_request) as s:
-        server = s
-        await stop_event.wait()
+    try:
+        logging.info(f"Starting WebSocket server on ws://{host}:{port}/ws")
+        async with websockets.serve(local_handler, host, port, process_request=local_process_request) as s:
+            server = s
+            await local_stop_event.wait()
+    finally:
+        if local_stop_event in stop_events:
+            stop_events.remove(local_stop_event)
 
     if loop_task:
         loop_task.cancel()
@@ -428,11 +462,14 @@ def run_app(instance: GameInterface, host: str = "0.0.0.0", port: int = 8765) ->
 
 async def stop_game() -> None:
     """
-    Stops the currently running game server.
+    Stops the currently running game servers.
     """
     global stop_event
     if stop_event:
         stop_event.set()
+    while stop_events:
+        event = stop_events.pop()
+        event.set()
 
 
 import argparse

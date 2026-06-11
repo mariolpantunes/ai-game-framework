@@ -1,6 +1,7 @@
+import shutil
+import tempfile
+import unittest
 from typing import Any
-
-import pytest
 
 from aigf.interface import GameInterface, GameState
 
@@ -30,39 +31,42 @@ class MockGame(GameInterface):
     def get_state(self) -> dict[str, Any]:
         return {"players": self.players, "ticks": self.ticks}
 
-@pytest.mark.asyncio
-async def test_game_lifecycle():
-    game = MockGame()
-    assert game.state == GameState.LOBBY
 
-    await game.on_player_connect(1)
-    assert game.state == GameState.LOBBY
+class TestGameInterface(unittest.IsolatedAsyncioTestCase):
+    async def test_game_lifecycle(self):
+        game = MockGame()
+        self.assertEqual(game.state, GameState.LOBBY)
 
-    await game.on_player_connect(2)
-    assert game.state == GameState.RUNNING
+        await game.on_player_connect(1)
+        self.assertEqual(game.state, GameState.LOBBY)
 
-    await game.tick(0.1)
-    assert game.ticks == 1
+        await game.on_player_connect(2)
+        self.assertEqual(game.state, GameState.RUNNING)
 
-    await game.on_player_disconnect(1)
-    assert game.state == GameState.LOBBY
+        await game.tick(0.1)
+        self.assertEqual(game.ticks, 1)
 
-def test_map_operations(tmp_path):
-    game = MockGame()
-    # Use temporary directory for testing map I/O
-    game.maps_dir = str(tmp_path)
+        await game.on_player_disconnect(1)
+        self.assertEqual(game.state, GameState.LOBBY)
 
-    map_data = {"width": 800, "height": 600, "obstacles": [1, 2, 3]}
-    success, err = game.save_map("level1", map_data)
-    assert success is True
-    assert err is None
+    def test_map_operations(self):
+        game = MockGame()
+        tmp_dir = tempfile.mkdtemp()
+        game.maps_dir = tmp_dir
 
-    maps = game.get_map_list()
-    assert maps == ["level1.json"]
+        try:
+            map_data = {"width": 800, "height": 600, "obstacles": [1, 2, 3]}
+            success, err = game.save_map("level1", map_data)
+            self.assertTrue(success)
+            self.assertIsNone(err)
 
-    loaded = game.load_map("level1.json")
-    assert loaded == map_data
+            maps = game.get_map_list()
+            self.assertEqual(maps, ["level1.json"])
 
-    non_existent = game.load_map("void")
-    assert non_existent is None
+            loaded = game.load_map("level1.json")
+            self.assertEqual(loaded, map_data)
 
+            non_existent = game.load_map("void")
+            self.assertIsNone(non_existent)
+        finally:
+            shutil.rmtree(tmp_dir)

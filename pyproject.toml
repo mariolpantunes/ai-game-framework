@@ -1,6 +1,34 @@
 [build-system]
-requires = ['setuptools>=42']
-build-backend = 'setuptools.build_meta'
+requires = ["setuptools>=61.0.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ai-game-framework"
+version = "1.1.0"
+authors = [
+    { name = "Mário Antunes", email = "mario.antunes@ua.pt" }
+]
+description = "AI Game Framework is a unified infrastructure designed to support the development and optimization of AI agents across various games."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT License" }
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+]
+dependencies = [
+    "websockets >= 16.0",
+]
+
+[tool.setuptools]
+package-dir = { "" = "src" }
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+aigf = ["frontend/*"]
 
 [tool.ruff]
 line-length = 120
@@ -16,5 +44,4 @@ extraPaths = ["src"]
 pythonVersion = "3.10"
 typeCheckingMode = "basic"
 venvPath = "."
-venv = ".venv"
-
+venv = "venv"

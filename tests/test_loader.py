@@ -3,87 +3,96 @@ import contextlib
 import http.client
 import json
 import os
+import unittest
 
-import pytest
-import pytest_asyncio
 import websockets
 
 from aigf.main import serve_game, stop_game
 
+_port_counter = 28780
 
-@pytest_asyncio.fixture(autouse=True)
-async def test_server():
-    os.environ["GAME_CLASS"] = "tests.test_interface.MockGame"
-    # Run serve_game in a background task
-    server_task = asyncio.create_task(serve_game("127.0.0.1", 8766))
-    # Give the server a small moment to start up
-    await asyncio.sleep(0.2)
-    yield "ws://127.0.0.1:8766/ws"
-    await stop_game()
-    with contextlib.suppress(Exception):
-        await server_task
+def get_next_port():
+    global _port_counter
+    _port_counter += 1
+    return _port_counter
 
-@pytest.mark.asyncio
-async def test_root_endpoint():
-    loop = asyncio.get_running_loop()
-    def get_url():
-        conn = http.client.HTTPConnection("127.0.0.1", 8766)
-        conn.request("GET", "/")
-        response = conn.getresponse()
-        body = response.read()
-        status = response.status
-        conn.close()
-        return body, status
 
-    body, status = await loop.run_in_executor(None, get_url)
-    assert status == 200
-    data = json.loads(body.decode("utf-8"))
-    assert data["status"] == "running"
-    assert data["game_loaded"] is True
+class TestLoader(unittest.IsolatedAsyncioTestCase):
+    async def asyncSetUp(self):
+        os.environ["GAME_CLASS"] = "tests.test_interface.MockGame"
+        self.port = get_next_port()
+        # Run serve_game in a background task
+        self.server_task = asyncio.create_task(serve_game("127.0.0.1", self.port))
+        # Give the server a small moment to start up
+        await asyncio.sleep(0.2)
+        if self.server_task.done():
+            self.server_task.result()
+        self.uri = f"ws://127.0.0.1:{self.port}/ws"
 
-@pytest.mark.asyncio
-async def test_static_file_serving():
-    loop = asyncio.get_running_loop()
-    def get_file():
-        conn = http.client.HTTPConnection("127.0.0.1", 8766)
-        conn.request("GET", "/framework/nord.css")
-        response = conn.getresponse()
-        body = response.read()
-        status = response.status
-        content_type = response.getheader("Content-Type")
-        conn.close()
-        return body, status, content_type
+    async def asyncTearDown(self):
+        await stop_game()
+        with contextlib.suppress(Exception):
+            await self.server_task
 
-    body, status, mime = await loop.run_in_executor(None, get_file)
-    assert status == 200
-    assert b"Nord Color Palette" in body
-    assert mime is not None and "text/css" in mime
+    async def test_root_endpoint(self):
+        loop = asyncio.get_running_loop()
+        def get_url():
+            conn = http.client.HTTPConnection("127.0.0.1", self.port)
+            conn.request("GET", "/")
+            response = conn.getresponse()
+            body = response.read()
+            status = response.status
+            conn.close()
+            return body, status
 
-@pytest.mark.asyncio
-async def test_api_maps():
-    loop = asyncio.get_running_loop()
-    def get_maps():
-        conn = http.client.HTTPConnection("127.0.0.1", 8766)
-        conn.request("GET", "/api/maps")
-        response = conn.getresponse()
-        body = response.read()
-        status = response.status
-        conn.close()
-        return body, status
+        body, status = await loop.run_in_executor(None, get_url)
+        self.assertEqual(status, 200)
+        data = json.loads(body.decode("utf-8"))
+        self.assertEqual(data["status"], "running")
+        self.assertTrue(data["game_loaded"])
 
-    body, status = await loop.run_in_executor(None, get_maps)
-    assert status == 200
-    data = json.loads(body.decode("utf-8"))
-    assert "maps" in data
-    assert isinstance(data["maps"], list)
+    async def test_static_file_serving(self):
+        loop = asyncio.get_running_loop()
+        def get_file():
+            conn = http.client.HTTPConnection("127.0.0.1", self.port)
+            conn.request("GET", "/framework/nord.css")
+            response = conn.getresponse()
+            body = response.read()
+            status = response.status
+            content_type = response.getheader("Content-Type")
+            conn.close()
+            return body, status, content_type
 
-@pytest.mark.asyncio
-async def test_websocket_invalid_client(test_server):
-    uri = test_server
-    async with websockets.connect(uri) as websocket:
-        await websocket.send(json.dumps({"client": "invalid"}))
-        try:
-            await websocket.recv()
-            raise AssertionError("Should have disconnected for invalid client type")
-        except websockets.exceptions.ConnectionClosed as e:
-            assert e.code == 1008
+        body, status, mime = await loop.run_in_executor(None, get_file)
+        self.assertEqual(status, 200)
+        self.assertIn(b"Nord Color Palette", body)
+        self.assertIsNotNone(mime)
+        assert mime is not None
+        self.assertIn("text/css", mime)
+
+    async def test_api_maps(self):
+        loop = asyncio.get_running_loop()
+        def get_maps():
+            conn = http.client.HTTPConnection("127.0.0.1", self.port)
+            conn.request("GET", "/api/maps")
+            response = conn.getresponse()
+            body = response.read()
+            status = response.status
+            conn.close()
+            return body, status
+
+        body, status = await loop.run_in_executor(None, get_maps)
+        self.assertEqual(status, 200)
+        data = json.loads(body.decode("utf-8"))
+        self.assertIn("maps", data)
+        self.assertIsInstance(data["maps"], list)
+
+    async def test_websocket_invalid_client(self):
+        async with websockets.connect(self.uri) as websocket:
+            await websocket.send(json.dumps({"client": "invalid"}))
+            try:
+                await websocket.recv()
+                self.fail("Should have disconnected for invalid client type")
+            except websockets.exceptions.ConnectionClosed as e:
+                code = getattr(e, "code", None) or getattr(websocket, "close_code", None)
+                self.assertEqual(code, 1008)

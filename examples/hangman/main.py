@@ -1,3 +1,8 @@
+__author__ = "Mário Antunes"
+__version__ = "1.1.0"
+__email__ = "mario.antunes@ua.pt"
+__status__ = "Development"
+
 import logging
 import random
 from typing import Any
@@ -56,6 +61,10 @@ async def handle_disconnect(player_id: int):
         global game_status
         game_status = "LOBBY"
         app.state = GameState.LOBBY
+
+@app.on_reset
+async def handle_reset():
+    start_new_game()
 
 @app.on_action
 async def handle_action(player_id: int, action: dict[str, Any]):
