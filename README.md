@@ -123,9 +123,9 @@ Located in `examples/hangman/`. A turn-based word-discovery game with zero ticks
 ---
 
 ## Running Unit Tests
-Validate code changes using pytest:
+Validate code changes using unittest:
 ```bash
-PYTHONPATH=src:. pytest
+python3 -m unittest discover -s tests
 ```
 
 ---

@@ -1,9 +1,6 @@
-.PHONY: docs update-logo
+.PHONY: docs
 
-update-logo:
-	python3 scripts/update_logo.py
-
-docs: update-logo
+docs:
 	# 1. Clean previous build
 	rm -rf docs_out
 
