@@ -28,7 +28,7 @@ Inspired by modern web micro-frameworks like **FastAPI** and **Flask**, `aigf` a
 Add it directly to your game project's `requirements.txt`:
 
 ```text
-ai-game-framework >= 1.0.0
+ai-game-framework >= 1.1.0
 ```
 
 Or install it directly from source/PyPI:
